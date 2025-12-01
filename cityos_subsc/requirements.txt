@@ -1,0 +1,13 @@
+elasticsearch
+fastapi
+uvicorn
+python-multipart
+sqlalchemy
+jinja2
+starlette
+aiofiles
+mysqlclient==2.1.1
+requests
+datetime
+chardet
+python-dotenv

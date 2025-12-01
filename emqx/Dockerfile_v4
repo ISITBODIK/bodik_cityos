@@ -1,0 +1,15 @@
+# EMQX V4.4のベースイメージを指定
+#FROM emqx/emqx:4.4.19
+FROM emqx/emqx:5.6.1
+
+# カスタムエントリーポイントスクリプトをコンテナにコピー
+# EMQX V4.4イメージはデフォルトでrootユーザーで実行されるため、USERコマンドは不要
+COPY start_emqx.sh /usr/local/bin/start_emqx.sh
+#RUN chmod +x /usr/local/bin/start_emqx.sh
+
+# コンテナ起動時のデフォルトコマンドとしてカスタムスクリプトを指定
+CMD ["/usr/local/bin/start_emqx.sh"]
+
+# 必要に応じて、認証設定ファイルなどをコピーする行をここに追加できます
+# V4.4のemqx_auth_http設定は etc/plugins/emqx_auth_http.conf などに記述します
+# COPY your_emqx_auth_http.conf /opt/emqx/etc/plugins/emqx_auth_http.conf

@@ -1,0 +1,40 @@
+<html lang="ja">
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4XG76YSYH6"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-4XG76YSYH6');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/9b1aec9491.js" crossorigin="anonymous"></script>
+
+    <script src="{{ base_url }}static/js/flexbox.js"></script>
+    <script src="{{ base_url }}static/js/env.js"></script>
+
+    {% block head %}
+    {% endblock %}
+
+</head>
+<body style="height: 100%; margin: 0; overflow: clip" onload="init()">
+    <header class="site-header">
+    </header>
+    
+    {% block js %}
+    {% endblock %}
+
+    {% block body %}
+    {% endblock %}
+
+</body>
+</html>

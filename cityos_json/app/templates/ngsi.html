@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<title>BODIK CityOS</title>
+
+<meta name="description" content="共有データ連携基盤">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/1.0.30/encoding.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ base_url }}static/css/ngsi.css">
+<script src="{{ base_url }}static/js/ngsi.js"></script>
+
+{% endblock %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="header" id="header">NGSI Test</div>
+    <div class="stage" id='stage'>
+        <div class="row">
+            <div class="label">ユーザー名</div>
+            <input type="text" class="edittext" id="username"></input>
+        </div>
+        <div class="row">
+            <div class="label">パスワード</div>
+            <input type="text" class="edittext" id="password"></input>
+        </div>
+        <div class="row">
+            <div class="label">entity-type</div>
+            <input type="text" class="edittext" id="entity-type"></input>
+        </div>
+        <div class="row">
+            <div class="label">Fiware-Service</div>
+            <input type="text" class="edittext" id="fiware-service"></input>
+        </div>
+        <div class="row">
+            <div class="label">Fiware-ServicePath</div>
+            <input type="text" class="edittext" id="fiware-servicepath"></input>
+        </div>
+        <div class="row">
+            <button class="submit" id="execute">実行</button>
+        </div>
+        <pre class="output" id="output"></div>
+    </div>
+    <div class='footer' id="footer"></div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    function init() {
+        //  画面
+        show_page();
+    }
+</script>
+
+{% endblock %}

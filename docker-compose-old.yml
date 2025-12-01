@@ -1,0 +1,295 @@
+services:
+  # fastapi for support
+  cityos_support:
+      container_name: cityos_support
+      build: ./cityos_support
+      volumes:
+          - ./cityos_support/app:/app
+          - ./ssl:/app/ssl
+      ports:
+          - "8080:8080"
+      networks:
+          - cityos_net
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+
+  elasticsearch:
+      container_name: cityos_es
+      build: ./elasticsearch
+      environment:
+          - xpack.security.enabled=false
+          - node.name=es01
+          - discovery.type=single-node
+          - cluster.name=docker-cluster
+          - bootstrap.memory_lock=true
+          - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      ulimits:
+          memlock:
+              soft: -1
+              hard: -1
+      volumes:
+          - cityos_es_vol:/usr/share/elasticsearch/data
+      ports:
+          - 19200:9200
+          - 19300:9300
+      networks:
+          - cityos_net
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+  # orion
+  orion:
+    image: fiware/orion
+    container_name: cityos_orion
+    hostname: orion
+    ports:
+      - "8082:1026"
+    volumes:
+      - ./ssl:/ssl
+    depends_on:
+      - mongo-db
+    #command: -dbhost mongo-db
+    command: -dbURI mongodb://mongo-db -https -cert /ssl/bodik.jp.pem -key /ssl/bodik.key
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  mongo-db:
+    container_name: cityos_mongo-db
+    build: ./mongodb
+    hostname: mongo-db
+    command: --nojournal
+    volumes:
+      - cityos_mongodb_vol:/data
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  cygnus:
+    image: fiware/cygnus-ngsi
+    hostname: cygnus
+    container_name: cityos_cygnus
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5055:5055"
+      - "5080:5080" 
+    environment:
+      - "CYGNUS=cygnus"
+      - "CYGNUS_ELASTICSEARCH=true"
+      - "ELASICSEARCH=elasticsearch"
+      
+      - "CYGNUS_POSTGRESQL_HOST=postgres-db" # Hostname of the PostgreSQL server used to persist historical context data
+      - "CYGNUS_POSTGRESQL_PORT=5432" # Port that the PostgreSQL server uses to listen to commands
+      - "CYGNUS_POSTGRESQL_USER=postgres" # Username for the PostgreSQL database user
+      - "CYGNUS_POSTGRESQL_PASS=password" # Password for the PostgreSQL database user
+      - "CYGNUS_POSTGRESQL_ENABLE_CACHE=true" # Switch to enable caching within the PostgreSQL configuration
+      - "CYGNUS_POSTGRESQL_SERVICE_PORT=5055" # The port the agent.conf is configured for
+      - "CYGNUS_LOG_LEVEL=DEBUG" # The logging level for Cygnus
+      - "CYGNUS_SERVICE_PORT=5055" # Notification Port that Cygnus listens to for Postgres subscriptions
+      - "CYGNUS_API_PORT=5080" # Port that Cygnus listens on for operational reasons
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  # kong gateway
+  kong:
+    container_name: cityos_kong
+    #image: kong:3.5.0
+    image: kong:3.4.2
+    ports:
+      - 0.0.0.0:80:8000   # listen request (HTTP)
+      - 443:8443           # listen request (HTTPS)
+
+      - 8086:8086           # admin API (HTTP)
+      - 8087:8087           # admin API (HTTPS)
+      - 8088:8002           # kong manage GUI
+      - 8089:8445           # kong manage GUI (HTTPS)
+
+      #- 8005:8005           # Hybrid mode
+      #- 8006:8006           # Hybrid mode
+
+    volumes:
+      - ./ssl:/usr/local/kong/cert
+    environment:
+      - "KONG_PROXY_ACCESS_LOG=/dev/stdout"
+      - "KONG_ADMIN_ACCESS_LOG=/dev/stdout"
+      - "KONG_PROXY_ERROR_LOG=/dev/stderr"
+      - "KONG_ADMIN_ERROR_LOG=/dev/stderr"
+      #- "KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl"  # ここを変更してはいけない！内部的に利用している。
+      - "KONG_ADMIN_LISTEN=0.0.0.0:8086, 0.0.0.0:8087 ssl"  # 内部の設定を変更
+      #- "KONG_STREAM_LISTEN=0.0.0.0:1883"
+
+      - "KONG_DATABASE=postgres"
+      - "KONG_PG_HOST=kong-db"
+      - "KONG_PG_USER=kong"
+      - "KONG_PG_PASSWORD=kongpass@fapi"
+
+      - "KONG_CLUSTER_CERT=/usr/local/kong/cert/bodik.jp.pem"
+      - "KONG_CLUSTER_CERT_KEY=/usr/local/kong/cert/bodik.key"
+      - "KONG_SSL_CERT=/usr/local/kong/cert/bodik.jp.pem"
+      - "KONG_SSL_CERT_KEY=/usr/local/kong/cert/bodik.key"
+      - "KONG_ADMIN_SSL_CERT=/usr/local/kong/cert/bodik.jp.pem"
+      - "KONG_ADMIN_SSL_CERT_KEY=/usr/local/kong/cert/bodik.key"
+      - "KONG_ADMIN_GUI_SSL_CERT=/usr/local/kong/cert/bodik.jp.pem"
+      - "KONG_ADMIN_GUI_SSL_CERT_KEY=/usr/local/kong/cert/bodik.key"
+    depends_on:
+      - "kong-migrate"
+    restart: "on-failure:3"
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  kong-migrate:
+    container_name: cityos_kongmig
+    #image: kong:3.5.0
+    image: kong:3.4.2
+    depends_on:
+      - "kong-db"
+    environment:
+      KONG_DATABASE: "postgres"
+      KONG_PG_HOST: "kong-db"
+      KONG_PG_USER: "kong"
+      KONG_PG_PASSWORD: "kongpass@fapi"
+      KONG_CASSANDRA_CONTACT_POINTS: "kong-db"
+    command: "kong migrations bootstrap"
+    restart: "on-failure:3"
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  kong-db:
+    container_name: cityos_kongdb
+    image: "postgres:16.1"
+    environment:
+      POSTGRES_DB: "kong"
+      POSTGRES_USER: "kong"
+      POSTGRES_PASSWORD: "kongpass@fapi"
+    volumes:
+      - cityos_kongdb_vol:/var/lib/postgresql/data
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  # iot-agent for json
+  iot-agent:
+    image: fiware/iotagent-json:latest
+    container_name: cityos_iotagent_json
+    depends_on: 
+      - mongo-db
+    expose:
+      - "4041"
+      - "7896"
+    ports:
+      - "4041:4041"
+      - "7896:7896"
+    environment:
+      - IOTA_CB_HOST=orion
+      - IOTA_CB_PORT=1026
+      - IOTA_NORTH_PORT=4041
+      - IOTA_REGISTRY_TYPE=mongodb
+      - IOTA_LOG_LEVEL=DEBUG
+      - IOTA_TIMESTAMP=true
+      - IOTA_CB_NGSI_VERSION=v2
+      - IOTA_AUTOCAST=true
+      - IOTA_MONGO_HOST=mongo-db
+      - IOTA_MONGO_PORT=27017
+      - IOTA_MONGO_DB=iotagentjson
+      - IOTA_HTTP_PORT=7896
+      - IOTA_PROVIDER_URL=http://iot-agent:4041
+      - IOTA_DEFAULT_RESOURCE=/iot/json    
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  # keycloak 認証
+  keycloak:
+    build: ./keycloak
+    container_name: cityos_keycloak
+    depends_on:
+      - keycloak_mysql
+    command: 
+      - start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      #KEYCLOAK_ADMIN: admin
+      #KEYCLOAK_ADMIN_PASSWORD: zaq1@@@@2wsx
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://cityos_mysql:3306/keycloak
+      KC_DB_URL_DATABSE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: zaq1@@KC@@2wsx
+    ports:
+      - 8081:8080
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+          max-file: '1'
+          max-size: 3m
+
+  keycloak_mysql:
+    build: ./mysql
+    container_name: cityos_mysql
+    volumes:
+      - cityos_keycloak-mysql_vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: KEYCLOAK_PASSWORD
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: zaq1@@KC@@2wsx
+    ports:
+      - 3306:3306
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+          max-file: '1'
+          max-size: 3m
+
+networks:
+  cityos_net:
+    driver: bridge
+
+volumes:
+  cityos_es_vol:
+  cityos_mongodb_vol:
+  cityos_kongdb_vol:
+  cityos_keycloak-mysql_vol:
+

@@ -1,0 +1,3 @@
+openssl x509 -in keycloak_cert.pem -pubkey -noout \
+  | openssl rsa -pubin -RSAPublicKey_out > rsa_public_key.pem
+  

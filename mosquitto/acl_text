@@ -1,0 +1,5 @@
+user mqtt_subscriber
+topic read #
+
+user hirano
+topic write temperature

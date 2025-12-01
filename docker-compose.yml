@@ -1,0 +1,429 @@
+services:
+  # fastapi for support
+  cityos_support:
+      container_name: cityos_support
+      build: ./cityos_support
+      volumes:
+          - ./cityos_support/app:/app
+          - ./tiledata:/app/tiledata
+          #- ./ssl:/app/ssl
+      env_file:
+        - ./.env
+      ports:
+          - "8080:8080"
+      networks:
+          - cityos_net
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+
+  cityos_json:
+      container_name: cityos_json
+      build: ./cityos_json
+      volumes:
+          - ./cityos_json/app:/app
+          #- ./ssl:/app/ssl
+      env_file:
+        - ./.env
+      ports:
+          - "8090:8080"
+      networks:
+          - cityos_net
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+
+  cityos_mqttsubsc:
+      container_name: cityos_mqttsubsc
+      build: ./cityos_mqttsubsc
+      volumes:
+          - ./cityos_mqttsubsc/app:/app
+          #- ./ssl:/app/ssl
+      env_file:
+        - ./.env
+      ports:
+          - "8083:8080"
+      networks:
+          - cityos_net
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+
+  cityos_subsc:
+      container_name: cityos_subsc
+      build: ./cityos_subsc
+      volumes:
+          - ./cityos_subsc/app:/app
+          #- ./ssl:/app/ssl
+      env_file:
+        - ./.env
+      ports:
+          - "8089:8080"
+      networks:
+          cityos_net:
+            ipv4_address: 172.29.0.100
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+
+  elasticsearch:
+      build: ./elasticsearch
+      container_name: cityos_es
+      environment:
+          - xpack.security.enabled=false
+          - node.name=es01
+          - discovery.type=single-node
+          - cluster.name=docker-cluster
+          - bootstrap.memory_lock=true
+          #- ELASTICSEARCH_PASSWORD=zaq1@2wsx
+          - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      ulimits:
+          memlock:
+              soft: -1
+              hard: -1
+      volumes:
+          - cityos_es_vol:/usr/share/elasticsearch/data
+      ports:
+          - 19200:9200
+          - 19300:9300
+      networks:
+          - cityos_net
+      logging:
+          driver: json-file
+          options:
+              max-file: '1'
+              max-size: 3m
+
+  kibana:
+    build: ./kibana
+    container_name: cityos_kibana
+    ports:
+      - 8085:5601
+    environment:
+      - ELASTICSEARCH_URL=http://cityos_es:9200
+      - ELASTICSEARCH_USERNAME=elasticsearch
+      #- ELASTICSEARCH_PASSWORD=zaq1@2wsx
+    depends_on:
+      - elasticsearch
+    #restart: always
+    networks:
+        - cityos_net
+    logging:
+        driver: json-file
+        options:
+            max-file: '1'
+            max-size: 3m
+
+  tileserver:
+    build: ./tileserver
+    container_name: cityos_tileserver
+    ports:
+      - 8081:8080
+    volumes:
+      - ./tiledata:/data
+    networks:
+        - cityos_net
+    logging:
+        driver: json-file
+        options:
+            max-file: '1'
+            max-size: 3m
+
+  # orion
+  orion:
+    image: fiware/orion
+    container_name: cityos_orion
+    hostname: orion
+    ports:
+      - "8082:1026"
+    #volumes:
+    #  - ./ssl:/ssl
+    depends_on:
+      - mongo-db
+    #command: -dbhost mongo-db
+    command: -dbURI mongodb://mongo-db
+    #command: -dbURI mongodb://mongo-db -https -cert /ssl/bodik.jp.pem -key /ssl/bodik.key
+    environment:
+      - ORION_LOG_LEVEL=INFO
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  mongo-db:
+    container_name: cityos_mongo-db
+    build: ./mongodb
+    hostname: mongo-db
+    #command: --nojournal
+    volumes:
+      - cityos_mongodb_vol:/data/db
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  # kong gateway
+  kong:
+    container_name: cityos_kong
+    build: ./kong
+    hostname: kong
+    #image: kong:3.4.2
+    ports:
+      - 0.0.0.0:80:8000   # listen request (HTTP)
+      - 443:8443           # listen request (HTTPS)
+
+      # 8086:8086           # admin API (HTTP)
+      - 8087:8087           # admin API (HTTPS)
+      #- 8088:8002           # kong manage GUI
+      - 8088:8445           # kong manage GUI (HTTPS)
+
+      #- 8005:8005           # Hybrid mode
+      #- 8006:8006           # Hybrid mode
+
+    volumes:
+      - ./ssl:/usr/local/kong/cert
+      - ./certs/keycloak_pub.pem:/etc/secrets/keycloak_pub.pem:ro
+    env_file:
+      - ./env/kong-ssl.env
+    environment:
+      - "KONG_PROXY_ACCESS_LOG=/dev/stdout"
+      - "KONG_ADMIN_ACCESS_LOG=/dev/stdout"
+      - "KONG_PROXY_ERROR_LOG=/dev/stderr"
+      - "KONG_ADMIN_ERROR_LOG=/dev/stderr"
+      #- "KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl"  # ここを変更してはいけない！内部的に利用している。
+      - "KONG_ADMIN_LISTEN=0.0.0.0:8086, 0.0.0.0:8087 ssl"  # 内部の設定を変更
+      #- "KONG_STREAM_LISTEN=0.0.0.0:1883"
+
+      - "KONG_DATABASE=postgres"
+      - "KONG_PG_HOST=kong-db"
+      - "KONG_PG_USER=kong"
+      - "KONG_PG_PASSWORD=kongpass@fapi"
+      - "KONG_PLUGINS=bundled,fiware-authz,check-scope"
+      #- "KONG_LOG_LEVEL=debug"
+
+    #command: "kong migrations bootstrap && kong start --nginx-conf /usr/local/kong/nginx.conf"
+    #entrypoint: ["/docker-entrypoint.sh", "kong", "start", "--nginx-conf", "/usr/local/kong/nginx.conf"]
+    entrypoint: ["/docker-entrypoint.sh", "kong", "start"]
+    depends_on:
+      kong-migrate:
+        condition: service_completed_successfully
+      fluentbit:
+        condition: service_healthy
+    restart: "on-failure:3"
+    networks:
+      - cityos_net
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: kong.{{.Name}}
+
+  kong-migrate:
+    container_name: cityos_kongmig
+    #image: kong:3.5.0
+    image: kong:3.9
+    depends_on:
+      kong-db:
+        condition: service_healthy
+    environment:
+      KONG_DATABASE: "postgres"
+      KONG_PG_HOST: "kong-db"
+      KONG_PG_USER: "kong"
+      KONG_PG_PASSWORD: "kongpass@fapi"
+      KONG_CASSANDRA_CONTACT_POINTS: "kong-db"
+      KONG_PLUGINS: bundled,fiware-authz
+    #command: "kong migrations up && kong migrations finish"
+    # 初回起動時、下記コマンドを手動実行すること
+    #   docker compose run --rm kong-migrate kong migrations bootstrap
+    command: "/bin/sh -c \"kong migrations up || true && kong migrations finish\""
+    restart: "no"
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  kong-db:
+    container_name: cityos_kongdb
+    image: "postgres:16.1"
+    environment:
+      POSTGRES_DB: "kong"
+      POSTGRES_USER: "kong"
+      POSTGRES_PASSWORD: "kongpass@fapi"
+    volumes:
+      - cityos_kongdb_vol:/var/lib/postgresql/data
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+    ports: # 外部からアクセスしない場合でも、デバッグ用にポートを公開しても良い
+      - "5432:5432"
+    healthcheck: # ここを追加します！
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"] # 環境変数を使用
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s # サービス起動直後の猶予期間
+
+  # MQTT broker
+  mosquitto:
+    build: ./mosquitto
+    container_name: cityos_mosquitto
+    hostname: mosquitto
+    ports:
+      - 1883:1883   # MQTT
+      - 8093:8883   # MQTTS
+    volumes:
+      - cityos_mosquitto_vol:/mosquitto/data
+      - ./mosquitto/config:/mosquitto/config
+      - ./certs:/usr/local/etc/mosquitto/certs
+      - ./ssl:/usr/local/etc/mosquitto/ssl
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+        max-file: '1'
+        max-size: 3m
+
+  # keycloak 認証
+  keycloak:
+    build: ./keycloak
+    container_name: cityos_keycloak
+    #hostname: keycloak.bodik.jp
+    depends_on:
+      - keycloak_mysql
+    command: 
+      - start-dev
+    volumes:
+      - ./ssl:/etc/ssl/cityos
+    env_file:
+      - ./env/keycloak-ssl.env
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      #KEYCLOAK_ADMIN: admin
+      #KEYCLOAK_ADMIN_PASSWORD: zaq1@@@@2wsx
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://cityos_mysql:3306/keycloak
+      KC_DB_URL_DATABSE: keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: zaq1@@KC@@2wsx
+
+      KC_HOSTNAME: ${KC_HOSTNAME}
+      #KC_HOSTNAME: keycloak
+      #KC_HTTP_ENABLED: 'true'
+      KC_HTTPS_ENABLED: 'true'
+      KC_HTTPS_PORT: 8443
+      KC_PROXY: edge
+      
+      KC_FEATURES: preview
+      KC_LOG_LEVEL: INFO
+
+    ports:
+      #- 8081:8080
+      - 8086:8443
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+          max-file: '1'
+          max-size: 3m
+
+  keycloak_mysql:
+    build: ./mysql
+    container_name: cityos_mysql
+    volumes:
+      - cityos_keycloak-mysql_vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: KEYCLOAK_PASSWORD
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: zaq1@@KC@@2wsx
+    ports:
+      - 3306:3306
+    networks:
+      - cityos_net
+    logging:
+      driver: json-file
+      options:
+          max-file: '1'
+          max-size: 3m
+
+  fluentbit:
+    build: ./fluentbit
+    container_name: cityos_fluentbit
+    hostname: cityos_fluentbit
+    # The command is the most critical part, it tells the container to start Fluent Bit with the configuration file.
+    command: /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
+    ports:
+      - "24224:24224"
+    networks:
+        - cityos_net
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 24224 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    logging:
+        driver: json-file
+        options:
+            max-file: '1'
+            max-size: 3m
+
+  minio:
+    build: ./minio
+    container_name: cityos_minio
+    environment:
+      MINIO_ROOT_USER: bodik
+      MINIO_ROOT_PASSWORD: zaq1@2wsx
+    volumes:
+      - cityos_minio_vol:/data
+    ports:
+      #- 8092:9000    WebAPI 
+      - 8092:9001     # WebUI(http)
+    command: server --console-address ":9001" /data
+    networks:
+        - cityos_net
+    logging:
+        driver: json-file
+        options:
+            max-file: '1'
+            max-size: 3m
+
+networks:
+  cityos_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.29.0.0/16
+          gateway: 172.29.0.1
+
+volumes:
+  cityos_es_vol:
+  cityos_mongodb_vol:
+  cityos_kongdb_vol:
+  cityos_keycloak-mysql_vol:
+  cityos_mosquitto_vol:
+  cityos_minio_vol:

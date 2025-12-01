@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<title>BODIK CityOS</title>
+
+<meta name="description" content="共有データ連携基盤">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/1.0.30/encoding.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{url_for('static', path='/css/top_page.css')}}">
+<script src="{{url_for('static', path='/js/top_page.js')}}"></script>
+
+{% endblock %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="header" id="header">BODIK API Series</div>
+    <div class="group_stage" id='stage'></div>
+    <div class='footer' id="footer"></div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    function init() {
+        //  画面
+        show_top_page();
+    }
+</script>
+
+{% endblock %}

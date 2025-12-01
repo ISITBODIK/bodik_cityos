@@ -1,0 +1,120 @@
+.container {
+    background: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+}
+
+.header {
+    background: rgb(48, 48, 139);
+    color: white;
+    width: 100%;
+    height: 50px;
+    padding-left: 5px;
+    flex-basis: 1;
+    align-items: flex-baseline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.command {
+    background-color: #3389CA;
+    width: 100%;
+    height: 60px;
+    padding-left: 5px;
+    flex-basis: 1;
+    align-items: flex-baseline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /*justify-content: space-between;*/
+}
+.select_dataset {
+    width: 300px;
+    height: 40px;
+    margin: 5px;
+    font-size: 14pt;
+}
+.submit {
+    width: 100px;
+    border-radius: 5px;
+    border-width: 1px;
+    margin: 10px 10px 10px 0;
+    height: 40px;
+    font-size: 14pt;
+}
+
+.stage {
+    width: 100%;
+    height: 100px;  /* paramのスクロールに対応するため、仮でいいので高さを指定する必要あり */
+    flex: 1 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.param_box {
+    /*background: rgb(63, 156, 69);*/
+    width: 300px;
+    margin: 0;
+    /*height: 100%;*/
+    overflow: auto;
+}
+.param_area {
+    /*width: 100%;*/
+    /*height: 100%;*/
+    margin: 0 0 50px 0;
+    display: flex;
+    flex-direction: column;
+    /*overflow-y: scroll;*/
+}
+.row {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+.row .caption {
+    margin: 5px 5px 0 10px;
+    height: 20px;
+    font-size: 10pt;
+}
+.row .text_field {
+    height: 40px;
+    margin: 5px;
+    background: white;
+    border: 1px solid rgb(68, 138, 230);
+    font-size: 14pt;
+}
+.row_last {
+    width: 100%;
+    height: 60px;
+}
+
+.grid_area {
+    width: 100%;
+    /*height: 600px;*/
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+.result_area {
+    background: rgb(182, 211, 231);
+    width: 300px;
+    /*height: 600px;*/
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    background-color: #3389CA;
+    width: 100%;
+    height: 60px;
+    padding-left: 5px;
+    flex-basis: 1;
+    align-items: flex-baseline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

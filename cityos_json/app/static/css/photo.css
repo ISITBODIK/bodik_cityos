@@ -1,0 +1,122 @@
+.container {
+    background: white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction:column;
+}
+
+.header {
+    background-color: #3389CA;
+    width: 100%;
+    height: 60px;
+    padding-left: 5px;
+    flex-basis: 1;
+    align-items: flex-baseline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header .title {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.show_map {
+    width: 50px;
+    height: 40px;
+    border-radius: 5px;
+    border-width: 1px;
+    margin-right: 10px;
+    font-size: 16pt;
+}
+
+#canvas {
+    display: none;
+}
+
+.stage {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.area {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+.map,
+.photo,
+.video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid gray;
+    object-fit: cover;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+/* アクティブなレイヤー */
+.active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 10; /* 最前面 */
+  transform: scale(1);
+}
+
+/* 他の非表示レイヤーは下に */
+.inactive {
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1;
+  transform: scale(0.95);
+}
+
+.row {
+    width: 100%;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.submit {
+    width: 100px;
+    border-radius: 5px;
+    border-width: 1px;
+    margin: 10px 10px 10px 0;
+    height: 40px;
+    font-size: 10pt;
+}
+.change_camera {
+    width: 50px;
+    height: 50px;
+    margin-right : auto;
+    border-radius: 5px;
+    border-width: 1px;
+    margin: 5px;
+    font-size: 10pt;
+}
+
+.output {
+    font-size: 12pt;
+}
+
+.footer {
+    background-color: #3389CA;
+    width: 100%;
+    height: 60px;
+    padding-left: 5px;
+    flex-basis: 1;
+    align-items: flex-baseline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

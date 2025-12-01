@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<title>BODIK CityOS データビューワー</title>
+
+<meta name="description" content="共有データ連携基盤サンプルアプリ">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/1.0.30/encoding.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/ag-grid/25.1.0/ag-grid-community.min.js'></script>
+<link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{{ base_url }}static/css/dataviewer.css">
+<script src="{{ base_url }}static/js/dataviewer.js"></script>
+
+{% endblock %}
+
+{% block body %}
+<div class="container" id="container">
+    <div class="header" id="header">
+        <div class="title">BODIK CityOS データ検索（public）</div>
+    </div>
+    <div class="command" id="command">
+        <select class="select_dataset" id="select_dataset"></select>
+        <button class="submit" id="search">検索</button>
+    </div>
+    <div class="stage" id='stage'>
+        <div class="param_box">
+            <div class="param_area" id="param_area"></div>
+        </div>
+        <div class="grid_area" id="grid_area"></div>
+    </div>
+    <div class='footer' id="footer"></div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+<script type="text/javascript">
+    function init() {
+        //  画面
+        show_page();
+    }
+</script>
+
+{% endblock %}
