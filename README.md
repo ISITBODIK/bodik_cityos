@@ -7,7 +7,6 @@
     kong.ssl.env
 
         KONG_CLUSTER_CERT=/usr/local/kong/cert/cityos.pem
-   
         KONG_CLUSTER_CERT_KEY=/usr/local/kong/cert/cityos.key<br>
         KONG_SSL_CERT=/usr/local/kong/cert/cityos.pem<br>
         KONG_SSL_CERT_KEY=/usr/local/kong/cert/cityos.key<br>
