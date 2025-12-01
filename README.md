@@ -16,7 +16,6 @@
     KONG_ADMIN_GUI_SSL_CERT=/usr/local/kong/cert/cityos.pem
     KONG_ADMIN_GUI_SSL_CERT_KEY=/usr/local/kong/cert/cityos.key
 
-
     keycloak-ssl.env
 
     KC_HTTPS_CERTIFICATE_FILE=/etc/ssl/cityos/cityos.pem
