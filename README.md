@@ -1,4 +1,4 @@
-# CityOSセットアップ
+# BODIK CityOSセットアップ
 
 ## ０．事前導入
 
@@ -11,7 +11,16 @@ CityOSのコードをインストールする前に、必要なモジュール�
     
 このレポジトリの「almalinux.sh」を参考にする。
 
-## １．OS環境などのセットアップ
+## １．BODIK CityOSのコードを導入する
+
+所定のフォルダ（例：/opt/cityos）にgithubからクローンする。
+
+    sudo mkdir /opt/cityos
+    cd /opt/cityos
+    sudo git clone https://github.com/isitbodik/bodik_cityos.git .
+    
+
+## ２．OS環境などのセットアップ
 
 最初に１回だけ次のコマンドを実行する。  
 
@@ -19,7 +28,7 @@ CityOSのコードをインストールする前に、必要なモジュール�
     sudo cp env.txt .env
 
 
-## ２．SSL証明書のセットアップ
+## ３．SSL証明書のセットアップ
 
 SSL証明書はそれぞれの環境に合わせて用意する。  
 ここでは、次のようなファイルであることを前提に、SSL証明書のセットアップを説明する。  
