@@ -1,11 +1,13 @@
-(1)  SSL証明書を ./ssl に配置する。<br>
+# SSL証明書のセットアップ
+
+## SSL証明書を ./ssl に配置する。
 
 例
 
     ./ssl/cityos.key
     ./ssl/cityos.pem
 
-(2)  ./envフォルダに、Kong用とkeycloak用の環境設定ファイルを置く。
+## ./envフォルダに、Kong用とkeycloak用の環境設定ファイルを置く。
 
 ./env/kong-ssl.env
 
@@ -24,7 +26,7 @@
     KC_HTTPS_CERTIFICATE_FILE=/etc/ssl/cityos/cityos.pem
     KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/ssl/cityos/cityos.key
 
-※これらのファイルは、docker-compose.yml から参照されている
+## これらのファイルは、docker-compose.yml から参照される
 
 kong
 
