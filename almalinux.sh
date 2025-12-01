@@ -23,7 +23,9 @@ sudo usermod -aG docker ${USER}
 # 権限設定
 #sudo chmod +x /usr/local/bin/docker-compose
 # python
-sudo dnf -y install python39 python39-devel python3-pip
+sudo dnf -y install python3.12 python3.12-devel python3.12-pip
+sudo alternatives --install /usr/bin/pip pip /usr/bin/pip3.12 30
+
 ## docker-compose
 pip3 install docker-compose
 
