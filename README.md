@@ -4,10 +4,10 @@
 |      cityos.pem<br>
 <br>
 2. ./envフォルダに、Kong用とkeycloak用の環境設定ファイルを置く。<br>
-|   kong.ssl.env<br>
-|      KONG_CLUSTER_CERT=/usr/local/kong/cert/cityos.pem<br>
-|      KONG_CLUSTER_CERT_KEY=/usr/local/kong/cert/cityos.key<br>
-|      KONG_SSL_CERT=/usr/local/kong/cert/cityos.pem<br>
+|  kong.ssl.env<br>
+|    KONG_CLUSTER_CERT=/usr/local/kong/cert/cityos.pem<br>
+|    KONG_CLUSTER_CERT_KEY=/usr/local/kong/cert/cityos.key<br>
+|    KONG_SSL_CERT=/usr/local/kong/cert/cityos.pem<br>
 |      KONG_SSL_CERT_KEY=/usr/local/kong/cert/cityos.key<br>
 |      KONG_ADMIN_SSL_CERT=/usr/local/kong/cert/cityos.pem<br>
 |      KONG_ADMIN_SSL_CERT_KEY=/usr/local/kong/cert/cityos.key<br>
