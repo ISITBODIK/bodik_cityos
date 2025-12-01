@@ -42,7 +42,7 @@ SSL証明書はそれぞれの環境に合わせて用意する。
     KC_HTTPS_CERTIFICATE_FILE=/etc/ssl/cityos/cityos.pem
     KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/ssl/cityos/cityos.key
 
-### これらのファイルは、docker-compose.yml から参照される
+### これらのファイルは、docker-compose.yml で参照している
 
 kong
 
