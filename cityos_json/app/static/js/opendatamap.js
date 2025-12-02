@@ -248,9 +248,10 @@ function set_property_select() {
             if (combo) {
 
                 for (let field in datamodel) {
+                    let info = datamodel[field];
                     if (!skip_fields.includes(field)) {
                         let option = document.createElement('option');
-                        option.value = field;
+                        option.value = info.field_name;
                         option.text = field;
                         combo.appendChild(option);
                     }
