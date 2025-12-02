@@ -78,7 +78,7 @@ class MyConfig:
 
                     "index": { "type": "keyword" },
                     "display_name": { "type": "keyword" },
-                    "geometry": { "type": "keyword" },
+                    "geometry": { "type": "object" },           # 2025-12-02 string to object
 
                     "dataModel": { "type": "object" },
                     "fields": { "type": "object" },
