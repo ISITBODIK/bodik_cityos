@@ -78,8 +78,9 @@ class MyConfig:
 
                     "index": { "type": "keyword" },
                     "display_name": { "type": "keyword" },
-                    "geometry": { "type": "object" },           # 2025-12-02 string to object
-                    "key": { "type": "object" },                # 2025-12-02 add
+                    "geometry": { "type": "keyword" },
+                    "geometry_field": { "type": "keyword" },        # 2025-12-02 add
+                    "key": { "type": "object" },                    # 2025-12-02 add
 
                     "dataModel": { "type": "object" },
                     "fields": { "type": "object" },
@@ -344,23 +345,14 @@ class MyConfig:
             properties[self.TIMESTAMP_FIELD] = self.field_type_dict['Keyword']
 
             # 緯度経度情報
-            geometry_type = ''
             geometry_field = ''
             geometry = myconfig['geometry']
-            if type(geometry) is str:
-                # 古いタイプのJSON
-                geometry_type = geometry
-                if geometry_type != '':
-                    geometry_field = 'geometry'
-            elif isinstance(geometry, dict):
-                if 'type' in geometry:
-                    geometry_type = geometry['type']
-                if 'field' in geometry:
-                    geometry_field = geometry['field']
+            if geometry != '':
+                geometry_field = myconfig['geometry_field']
 
             if geometry_field != '' and geometry_field not in properties:
-                if geometry_type in self.field_type_dict:
-                    properties[geometry_field] = self.field_type_dict[geometry_type]
+                if geometry in self.field_type_dict:
+                    properties[geometry_field] = self.field_type_dict[geometry]
 
             myconfig['fields'] = fields
             myconfig['mapping'] = {
