@@ -11,6 +11,7 @@ let selected_myconfig = null;
 let selected_property = null;
 let selected_datatype = null;
 let myconfig_list = {}
+let geometry_field = null;
 
 const listMaxResult = [
     { value: 10,   text: '10件'},
@@ -137,6 +138,8 @@ function get_myconfig() {
         .then(data => {
             myconfig_list[selected_apiname] = data;
             selected_myconfig = data;
+            geometry_field = selected_myconfig['geometry_field'];
+
             set_property_select();
         });
     } catch(error) {
@@ -386,7 +389,8 @@ function show_data(data) {
         let bounds = null;
         let markers = [];
         for (let item of data) {
-            let coordinates = item['location']['coordinates'];
+            //let coordinates = item['location']['coordinates'];
+            let coordinates = item[geometry_field]['coordinates'];
             let pos = [ coordinates[1], coordinates[0] ];
             let marker = L.marker(pos);
             let info = item[selected_property];
