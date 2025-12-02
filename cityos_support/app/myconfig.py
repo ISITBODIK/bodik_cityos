@@ -323,7 +323,7 @@ class MyConfig:
                 properties[field_name] = self.field_type_dict[field_type]
 
 
-            # 管理情報
+            # CKANから自治体単位でデータを取り込む場合の管理情報
             fields['resource_organ_code'] = {
                 "field_type": "String",
                 "filter": "wildcard"
@@ -332,40 +332,34 @@ class MyConfig:
                 "field_type": "String",
                 "filter": "wildcard"
             }
-            # 2025-09-01 追加
+            properties['resource_organ_code'] = self.field_type_dict['Keyword']
+            properties['resource_id'] = self.field_type_dict['Keyword']
+            
+            # 2025-09-01 リアルタイムデータ用の管理情報を追加
             fields[self.TIMESTAMP_FIELD] = {
                 "field_type": "Date",
                 "filter": "range"
             }
-            
-            properties['resource_organ_code'] = self.field_type_dict['Keyword']
-            properties['resource_id'] = self.field_type_dict['Keyword']
-            # 2025-08-19 added
             properties[self.TIMESTAMP_FIELD] = self.field_type_dict['Keyword']
 
-            # location
+            # 緯度経度情報
+            geometry_type = ''
+            geometry_field = ''
             geometry = myconfig['geometry']
-            if geometry != '':
-                fields['lat'] = {
-                    'field_type': 'Location.lat',
-                    'filter': 'wildcard'
-                }
+            if type(geometry) is str:
+                # 古いタイプのJSON
+                geometry_type = geometry
+                if geometry_type != '':
+                    geometry_field = 'geometry'
+            elif isinstance(geometry, dict):
+                if 'type' in geometry:
+                    geometry_type = geometry['type']
+                if 'field' in geometry:
+                    geometry_field = geometry['field']
 
-                fields['lon'] = {
-                    'field_type': 'Location.lon',
-                    'filter': 'wildcard'
-                }
-
-                if geometry == 'Point':
-                    if 'lat' in properties:
-                        del properties['lat']
-                    if 'lon' in properties:
-                        del properties['lon']
-                    properties['geometry'] = self.field_type_dict['Point']
-                elif geometry == 'Polygon':
-                    properties['geometry'] = self.field_type_dict['Polygon']
-                elif geometry == 'Line':
-                    properties['geometry'] = self.field_type_dict['Line']
+            if geometry_field != '' and geometry_field not in properties:
+                if geometry_type in self.field_type_dict:
+                    properties[geometry_field] = self.field_type_dict[geometry_type]
 
             myconfig['fields'] = fields
             myconfig['mapping'] = {
