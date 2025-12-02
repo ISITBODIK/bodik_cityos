@@ -1,0 +1,45 @@
+{
+  "apiname": "photo",
+  "index": "bodik_photo",
+  "entity_type": "photo",
+  "Fiware-Service": "bodik",
+  "Fiware-ServicePath": "/public/photo",
+  "display_name": "（テスト）写真",
+  "geometry": "Point",
+  "geometry_field": "location",
+  "key": {
+    "fiware": {
+      "fields": [ "device_id" ]
+    }
+  },
+  "dataModel": {
+    "デバイスID": {
+      "field_name": "device_id",
+      "type": "Keyword"
+    },
+    "名前": {
+      "field_name": "name",
+      "type": "Keyword"
+    },
+    "写真リンク": {
+      "field_name": "photo_url",
+      "type": "Keyword"
+    },
+    "緯度": {
+      "field_name": "lat",
+      "type": "Location.lat"
+    },
+    "経度": {
+      "field_name": "lon",
+      "type": "Location.lon"
+    },
+    "撮影時刻": {
+      "field_name": "timestamp",
+      "type": "Keyword"
+    },
+    "座標": {
+      "field_name": "location",
+      "type": "geo:json"
+    }
+  }
+}
