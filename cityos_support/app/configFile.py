@@ -82,42 +82,44 @@ class configFile:
                 if prefix is not None and not text.startswith(prefix):
                     data['index'] = f'{prefix}_{text}'
 
-                for key in data['dataModel']:
-                    item = data['dataModel'][key]
-                    if 'rename_list' in item:
+                # CKANからデータを取り込む場合
+                if 'tag_only' in data:
+                    for key in data['dataModel']:
+                        item = data['dataModel'][key]
+                        if 'rename_list' in item:
+                            token = []
+                            text = item['rename_list'].strip()
+                            if text != '':
+                                token = text.split(';')
+                            item['rename_list'] = token
+
+                    # text to boolean
+                    for field in [ 'tag_only', 'select_latest']:
+                        flag = True
+                        if data[field].lower() == 'false':
+                            flag = False
+                        data[field] = flag
+
+                    # text to list
+                    for field in [ 'dataset_title_list', 'format_list' ]:
                         token = []
-                        text = item['rename_list'].strip()
+                        text = data[field].strip()
                         if text != '':
                             token = text.split(';')
-                        item['rename_list'] = token
+                        data[field] = token
 
-                # text to boolean
-                for field in [ 'tag_only', 'select_latest']:
-                    flag = True
-                    if data[field].lower() == 'false':
-                        flag = False
-                    data[field] = flag
+                    # tag_list ２重配列
+                    tag_set_list = []
+                    tag_list = data['tag_list'].strip()
+                    if tag_list != '':
+                        tags_list = tag_list.split('/')
+                        for tags in tags_list:
+                            text = tags.strip()
+                            if text != '':
+                                tag_set = text.split(';')
+                                tag_set_list.append(tag_set)
 
-                # text to list
-                for field in [ 'dataset_title_list', 'format_list' ]:
-                    token = []
-                    text = data[field].strip()
-                    if text != '':
-                        token = text.split(';')
-                    data[field] = token
-
-                # tag_list ２重配列
-                tag_set_list = []
-                tag_list = data['tag_list'].strip()
-                if tag_list != '':
-                    tags_list = tag_list.split('/')
-                    for tags in tags_list:
-                        text = tags.strip()
-                        if text != '':
-                            tag_set = text.split(';')
-                            tag_set_list.append(tag_set)
-
-                data['tag_list'] = tag_set_list
+                    data['tag_list'] = tag_set_list
 
                 myconfig = data
 
