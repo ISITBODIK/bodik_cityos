@@ -389,6 +389,7 @@ function show_data(data) {
         let bounds = null;
         let markers = [];
         for (let item of data) {
+            console.log(item);
             //let coordinates = item['location']['coordinates'];
             let coordinates = item[geometry_field]['coordinates'];
             let pos = [ coordinates[1], coordinates[0] ];
