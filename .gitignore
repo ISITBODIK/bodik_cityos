@@ -12,9 +12,6 @@ password*
 *.acl
 *.passwd
 
-*.geojson
-*.json
-
 *.pyc
 __pycache__/
 
