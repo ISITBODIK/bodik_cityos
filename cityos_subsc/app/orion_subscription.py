@@ -56,6 +56,7 @@ class OrionSubscription:
                         subsciption_list = response.json()
                         n = len(subsciption_list)
                         for sub_data in subsciption_list:
+                            print('subscription data', sub_data)
                             if sub_data['description'].startswith(self.usecase):
                                 output.append(sub_data)
 
