@@ -10,7 +10,7 @@ BODIK CityOSを動かすためには、次のようなモジュールを必要�
 	python（3.12〜）
 	unzip
 		
-「almalinux.sh」を参考にすること。
+[almalinux.sh](almalinux.sh) を参考にすること。
 		
 ## (2) BODIK CityOSリポジトリをクローンする
 下記コマンドでソースコードをクローンする。  
