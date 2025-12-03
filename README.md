@@ -12,7 +12,7 @@ BODIK CityOSを動かすためには、次のようなモジュールを必要�
 		
 [almalinux.sh](almalinux.sh) を参考にすること。
 		
-## (2) BODIK CityOSリポジトリをクローンする
+## (2) BODIK CityOSリポジトリからクローンする
 下記コマンドでソースコードをクローンする。  
 クローンしたら、setup_dev.sh を実行する。
 
