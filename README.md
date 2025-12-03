@@ -21,7 +21,7 @@ BODIK CityOSを動かすためには、次のようなモジュールを必要�
 
 
 ## (3) SSL証明書をセットする
-[SETUP_SSL.md](SETUP_SSL.md)を参考にすること。	
+[SETUP_SSL.md](SETUP_SSL.md) を参考にすること。	
 
 ## (4) 環境設定ファイルをコピーする
 「copy_env.sh」を使って、環境設定ファイル（env.py, env.js）を作成する。
@@ -50,18 +50,18 @@ keycloakの管理画面を表示する。
 
 	https://<cityosのURL>:8086
 
-詳細は、[SETUP_KEYCLOAK.md]を参照。
+詳細は、[SETUP_KEYCLOAK.md] を参照。
 
 ## (8) Kongセットアップ（準備中）
 Kongの管理画面を表示する。
 
 	https://<cityosのURL>:8088
 
-詳細は、[SETUP_KONG.md]を参照。
+詳細は、[SETUP_KONG.md] を参照。
 
 ## (9) MyAPI登録（準備中）
 BODIK CityOSにデータを取り込むには、事前に「データセット定義JSON」を作成し、CityOSに登録する必要がある。（MyAPI登録作業）
-詳細は、[SETUP_MYAPI.md]を参照。
+詳細は、[SETUP_MYAPI.md] を参照。
 
 ## (10) データ取り込み（準備中）
 外部からBODIK CityOSにデータを取り込むには、「BODIK ODGWR」を利用する。
