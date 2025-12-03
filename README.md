@@ -13,10 +13,13 @@ BODIK CityOSを動かすためには、次のようなモジュールを必要�
 「almalinux.sh」を参考にすること。
 		
 ## (2) BODIK CityOSリポジトリをクローンする
-		
+下記コマンドでソースコードをクローンする。  
+クローンしたら、setup_dev.sh を実行する。
+
 	git clone https://github.com/isitbodik/bodik_cityos.git .
 	./setup_dev.sh
-		
+
+
 ## (3) SSL証明書をセットする
 [SETUP_SSL.md](SETUP_SSL.md)を参考にすること。	
 
