@@ -142,8 +142,10 @@ class OrionSubscription:
         try:
             sub_data = self.search_subscription()
             if sub_data is None:
+                print('new subscription')
                 self.create_subscription(endpoint)
             else:
+                print('update subscription')
                 subscription_id = sub_data['id']
                 self.update_subscription(endpoint, subscription_id)
             
@@ -154,6 +156,7 @@ class OrionSubscription:
     def create_subscription(self, endpoint):
         result = False
         try:
+            print('create_subscription called')
             url = f'{self.orion_server}/subscriptions'
             data = {
                 'description': self.subscription_key,
