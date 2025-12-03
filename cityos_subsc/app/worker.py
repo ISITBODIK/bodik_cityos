@@ -109,8 +109,8 @@ class Worker(threading.Thread):
     def save_data(self, myconfig, data):
         result = False
         try:
-            doc_id = myconfig['apiname']
             if 'key' in myconfig and 'es' in myconfig['key'] and 'fields' in myconfig['key']['es']:
+                doc_id = myconfig['apiname']
                 fields = myconfig['key']['es']['fields']
                 for field in fields:
                     doc_id = f'{doc_id}.{data[field]}'

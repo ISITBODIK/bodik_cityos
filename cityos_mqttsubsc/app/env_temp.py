@@ -8,5 +8,5 @@ orion_server = 'http://orion:1026'
 
 mqtt_admin_user = 'mqtt-subscriber'
 mqtt_admin_pass = ''
-mqtt_broker = 'cityos_emqx'
-mqtt_port = '1883'
+mqtt_broker = 'cityos_mosquitto'
+mqtt_port = 1883

@@ -1,10 +1,10 @@
 {
   "apiname": "photo",
+  "display_name": "（テスト）写真",
   "index": "bodik_photo",
   "entity_type": "photo",
   "Fiware-Service": "bodik",
   "Fiware-ServicePath": "/public/photo",
-  "display_name": "（テスト）写真",
   "geometry": "Point",
   "geometry_field": "location",
   "key": {

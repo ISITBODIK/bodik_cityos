@@ -30,6 +30,27 @@ function copyenv() {
             echo "エラー: 'env_temp.py' が見つかりません。コピーできませんでした。"
         fi
     fi
+
+    # static/jsディレクトリに移動
+    if [ -d "./static/js" ]; then
+        cd "./static/js" || { echo "cd ./static/js に失敗しました。"; exit 1; }
+    else
+        echo "エラー: 'static/js' ディレクトリが見つかりません。"
+        exit 1
+    fi
+
+    # env.py ファイルが存在するかチェック
+    if [ -f "env.js" ]; then
+        echo "ファイル 'env.js' は既に存在します。スキップします。"
+    else
+        # env_temp.py を env.py にコピー
+        if [ -f "env_temp.js" ]; then
+            cp "env_temp.js" "env.js"
+            echo "'env_temp.js' から 'env.js' を作成しました。"
+        else
+            echo "エラー: 'env_temp.js' が見つかりません。コピーできませんでした。"
+        fi
+    fi
 }
 
 # ---
