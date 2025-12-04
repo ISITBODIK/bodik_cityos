@@ -41,7 +41,6 @@ HTTPS通信のためのSSL証明書は、環境ごとに用意すること。
 	cp env.txt .env
 
 ※.envファイルには必要に応じて情報を追加する。  
-例　KONG_SECRET=xxxxxx
 
 ## (6) docker compose を使ってシステムを起動する
 
