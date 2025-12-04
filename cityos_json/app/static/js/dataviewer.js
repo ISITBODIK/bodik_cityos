@@ -136,13 +136,38 @@ function show_params() {
 
 function execute_search() {
     try {
-        call_ngsi({});
+        let query = build_query();
+        call_ngsi(query);
     } catch(error) {
         alert('execute_search:' + error);
     }
 }
 
-async function call_ngsi() {
+function build_query() {
+    let result = null;
+    try {
+        if (selected_myconfig) {
+            let datamodel = selected_myconfig['dataModel'];
+            let condition = [];
+            for (let field in datamodel) {
+                let item = document.getElementById(field);
+                if (item) {
+                    let text = item.value;
+                    if (text.length > 0) {
+                        let q = `${field}==${text}`;
+                        condition.push(q);
+                    }
+                }
+            }
+            result = condition.join(';')
+        }
+    } catch(error) {
+        alert('build_query:' + error);
+    }
+    return result;
+}
+
+async function call_ngsi(query) {
     try {
         show_data(null);
         let entity_type = selected_myconfig.entity_type;
@@ -164,6 +189,9 @@ async function call_ngsi() {
             'options': 'keyValues',
             'offset': 0,
             'limit': 100
+        }
+        if (query) {
+            q['q'] = query;
         }
         const params = new URLSearchParams(q);
 
