@@ -188,7 +188,7 @@ async function call_ngsi(query) {
             'type': entity_type,
             'options': 'keyValues',
             'offset': 0,
-            'limit': 100
+            'limit': 1000
         }
         if (query) {
             q['q'] = query;
