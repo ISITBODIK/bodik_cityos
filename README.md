@@ -63,7 +63,7 @@ Kongの管理画面を表示する。
 詳細は、[SETUP_KONG.md] を参照。
 
 ## (9) MyAPI登録（準備中）
-BODIK CityOSにデータを取り込むには、事前に「データセット定義JSON」を作成し、CityOSに登録する必要がある。（MyAPI登録作業）
+BODIK CityOSにデータを取り込むには、事前に「データセット定義JSON」を作成し、CityOSに登録する必要がある。（MyAPI登録作業）  
 詳細は、[SETUP_MYAPI.md] を参照。
 
 ## (10) データ取り込み（準備中）
