@@ -45,9 +45,10 @@ HTTPS通信のためのSSL証明書は、環境ごとに用意すること。
 
 ## (6) docker compose を使ってシステムを起動する
 
-	docker compose up -c --build
+	docker compose up -d --build
 
 ## (7) keycloakセットアップ（準備中）
+ユーザー登録など、ユーザー認証に関する設定を行う。  
 keycloakの管理画面を表示する。
 
 	https://<cityosのURL>:8086
@@ -55,6 +56,7 @@ keycloakの管理画面を表示する。
 詳細は、[SETUP_KEYCLOAK.md] を参照。
 
 ## (8) Kongセットアップ（準備中）
+APIゲートウェイはKongを使用する。  
 Kongの管理画面を表示する。
 
 	https://<cityosのURL>:8088
