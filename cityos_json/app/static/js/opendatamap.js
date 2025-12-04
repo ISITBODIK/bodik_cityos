@@ -361,7 +361,7 @@ function search_data() {
                 'type': info['entity_type'],
                 'options': 'keyValues',
                 'offset': 0,
-                'limit': 100
+                'limit': 1000
             }
             const params = new URLSearchParams(q)
             let url = `${fiware_server}/v2/entities?` + params.toString();
