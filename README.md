@@ -22,7 +22,7 @@ BODIK CityOSを動かすためには、次のようなモジュールを必要�
 
 ## (3) SSL証明書をセットする
 HTTPS通信のためのSSL証明書は、環境ごとに用意すること。  
-設定手順は、[SETUP_SSL.md](SETUP_SSL.md) を参考にすること。	
+設定手順は、[SETUP_SSL.md](SETUP_SSL.md) を参照。	
 
 ## (4) 環境設定ファイルをコピーする
 「copy_env.sh」を使って、環境設定ファイル（env.py, env.js）を作成する。
