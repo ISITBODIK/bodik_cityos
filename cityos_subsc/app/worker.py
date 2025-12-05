@@ -118,7 +118,16 @@ class Worker(threading.Thread):
                 doc = {}
                 for field in myconfig['fields']:
                     if field in data:
-                        doc[field] = data[field]
+                        info = fields[field]
+                        value = data[field]
+                        if info['field_type'] == 'Point':
+                            coord = value['coordinates']
+                            doc[field] = {
+                                'lat': coord[1],
+                                'lon': coord[0]
+                            }
+                        else:
+                            doc[field] = value
 
                 if self.TIMESTAMP_FIELD not in doc:
                     # ソート用に登録時刻を記録する
