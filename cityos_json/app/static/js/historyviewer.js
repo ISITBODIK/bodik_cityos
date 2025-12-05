@@ -136,13 +136,37 @@ function show_params() {
 
 function execute_search() {
     try {
-        call_ngsi({});
+        let query = build_query();
+        search_history(query);
     } catch(error) {
         alert('execute_search:' + error);
     }
 }
 
-async function call_ngsi() {
+function build_query() {
+    let result = null;
+    try {
+        if (selected_myconfig) {
+            let condition = {};
+            let datamodel = selected_myconfig['dataModel'];
+            for (let field in datamodel) {
+                let item = document.getElementById(field);
+                if (item) {
+                    let text = item.value;
+                    if (text.length > 0) {
+                        condition[field] = text
+                    }
+                }
+            }
+            result = condition;
+        }
+    } catch(error) {
+        alert('build_query:' + error);
+    }
+    return result;
+}
+
+async function search_history(query) {
     try {
         show_data(null);
         let apiname = selected_myconfig.apiname;
@@ -157,10 +181,12 @@ async function call_ngsi() {
             'Fiware-ServicePath': fiware_servicepath
         }
 
-        let params = {
+        let p = {
             'apiname': apiname,
             'maxResults': 1000
-        }
+        };
+        let params = Object.assign(p, query);
+        
         options = {
             method: 'POST',
             headers: headers,
