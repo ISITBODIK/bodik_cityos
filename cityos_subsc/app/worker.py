@@ -131,7 +131,10 @@ class Worker(threading.Thread):
                                 'lon': coord[0]
                             }
                         else:
-                            doc[field] = value
+                            if type(value) is str:
+                                doc[field] = self.decodeFiwareEscapeChar(value)
+                            else:
+                                doc[field] = value
 
                 if self.TIMESTAMP_FIELD not in doc:
                     # ソート用に登録時刻を記録する
