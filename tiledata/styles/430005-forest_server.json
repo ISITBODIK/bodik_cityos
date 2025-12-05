@@ -1,0 +1,23 @@
+{
+    "version": 8,
+    "sources": {
+        "forest": {
+            "type": "vector",
+            "tiles": [
+                "http://cityos.bodik.jp/tile/data/430005_forest/{z}/{x}/{y}.pbf"
+            ]
+        }
+    },
+    "layers": [
+        {
+            "id": "430005_forest",
+            "type": "fill",
+            "source": "forest",
+            "source-layer": "forest",
+            "paint": {
+                "fill-color": "#088",
+                "fill-opacity": 0.5
+            }
+        }
+    ]
+}

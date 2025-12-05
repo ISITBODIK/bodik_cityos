@@ -1,0 +1,46 @@
+{
+    "apiname": "temperature",
+    "index": "bodik_temperature",
+    "entity_type": "temperature",
+    "Fiware-Service": "bodik",
+    "Fiware-ServicePath": "/public/temperature",
+    "display_name": "（テスト）温度情報",
+    "geometry": "",
+    "tag_only": "true",
+    "select_latest": "false",
+    "dataset_title_list": "",
+    "tag_list": "",
+    "resource_title": "",
+    "resource_filename": "",
+    "format_list": "csv",
+    "must_fields": [],
+    "key": {
+      "fiware": {
+        "fields": [ "device-id" ]
+      },
+      "es": {
+        "fields": [ "device-id", "timestamp" ]
+      }
+    },
+    "subscription": {
+      "attrs": [ "timestamp", "value"]
+    },
+    "dataModel": {
+      "device-id": {
+        "field_name": "device-id",
+        "type": "Keyword"
+      },
+      "place": {
+        "field_name": "place",
+        "type": "String"
+      },
+      "timestamp": {
+        "field_name": "timestamp",
+        "type": "Keyword"
+      },
+      "value": {
+        "field_name": "value",
+        "type": "Float"
+      }
+    }
+  }

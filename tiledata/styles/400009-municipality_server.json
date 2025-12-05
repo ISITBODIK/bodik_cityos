@@ -1,0 +1,23 @@
+{
+    "version": 8,
+    "sources": {
+        "municipality": {
+            "type": "vector",
+            "tiles": [
+                "http://cityos.bodik.jp/tile/data/400009_municipality/{z}/{x}/{y}.pbf"
+            ]
+        }
+    },
+    "layers": [
+        {
+            "id": "400009_municipality",
+            "type": "fill",
+            "source": "municipality",
+            "source-layer": "municipality",
+            "paint": {
+                "fill-color": "#088",
+                "fill-opacity": 0.5
+            }
+        }
+    ]
+}

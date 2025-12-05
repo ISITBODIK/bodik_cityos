@@ -1,0 +1,68 @@
+{
+    "options": {
+        "paths": {
+            "root": "",
+            "styles": "styles"
+        }
+    },
+    "data": {
+        "401307_elementary": {
+            "mbtiles": "/data/elementary/401307_elementary.mbtiles"
+        },
+        "400009_municipality": {
+            "mbtiles": "/data/municipality/400009_municipality.mbtiles"
+        },
+        "420000_forest": {
+            "mbtiles": "/data/forest/420000_forest.mbtiles"
+        },
+        "430005_forest": {
+            "mbtiles": "/data/forest/430005_forest.mbtiles"
+        }
+    },
+    "styles": {
+        "401307_elementary": {
+            "style": "401307_elementary.json",
+            "tilejson": {
+                "vector_layers": [
+                    {
+                        "id": "401307_elementary",
+                        "description": "福岡市小学校区"
+                    }
+                ]
+            }
+        },
+        "400009_municipality": {
+            "style": "400009-municipality.json",
+            "tilejson": {
+                "vector_layers": [
+                    {
+                        "id": "400009_municipality",
+                        "description": "福岡県"
+                    }
+                ]
+            }
+        },
+        "420000_forest": {
+            "style": "420000-forest.json",
+            "tilejson": {
+                "vector_layers": [
+                    {
+                        "id": "420000_forest",
+                        "description": "長崎県森林"
+                    }
+                ]
+            }
+        },
+        "430005_forest": {
+            "style": "430005-forest.json",
+            "tilejson": {
+                "vector_layers": [
+                    {
+                        "id": "430005_forest",
+                        "description": "熊本県森林"
+                    }
+                ]
+            }
+        }
+    }
+}

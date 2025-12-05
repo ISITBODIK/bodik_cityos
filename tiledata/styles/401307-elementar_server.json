@@ -1,0 +1,23 @@
+{
+    "version": 8,
+    "sources": {
+        "elementary": {
+            "type": "vector",
+            "tiles": [
+                "http://cityos.bodik.jp/tile/data/401307_elementary/{z}/{x}/{y}.pbf"
+            ]
+        }
+    },
+    "layers": [
+        {
+            "id": "401307_elementary",
+            "type": "fill",
+            "source": "elementary",
+            "source-layer": "elementary",
+            "paint": {
+                "fill-color": "#088",
+                "fill-opacity": 0.5
+            }
+        }
+    ]
+}

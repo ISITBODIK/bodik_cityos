@@ -1,0 +1,46 @@
+{
+    "apiname": "bank",
+    "index": "bodik_bank",
+    "entity_type": "bank",
+    "Fiware-Service": "bodik",
+    "Fiware-ServicePath": "/protected/bank",
+    "display_name": "（テスト）銀行情報",
+    "geometry": "",
+    "tag_only": "true",
+    "select_latest": "false",
+    "dataset_title_list": "",
+    "tag_list": "",
+    "resource_title": "",
+    "resource_filename": "",
+    "format_list": "csv",
+    "must_fields": [],
+    "key": {
+      "fiware": {
+        "fields": [ "username" ]
+      },
+      "es": {
+        "fields": [ "username", "date" ]
+      }
+    },
+    "subscription": {
+      "attrs": [ "date", "money"]
+    },
+    "dataModel": {
+      "username": {
+        "field_name": "username",
+        "type": "Keyword"
+      },
+      "name": {
+        "field_name": "name",
+        "type": "String"
+      },
+      "date": {
+        "field_name": "date",
+        "type": "Date"
+      },
+      "money": {
+        "field_name": "money",
+        "type": "Integer"
+      }
+    }
+  }
