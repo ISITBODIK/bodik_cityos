@@ -121,6 +121,8 @@ class Worker(threading.Thread):
                         info = fields[field]
                         value = data[field]
                         if info['field_type'] == 'Point':
+                            print('info', info)
+                            print('point value', value)
                             coord = value['coordinates']
                             doc[field] = {
                                 'lat': coord[1],
