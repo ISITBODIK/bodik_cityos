@@ -124,7 +124,7 @@ class Worker(threading.Thread):
                 doc = {}
                 for field in data_fields:
                     if field in data:
-                        info = fields[field]
+                        info = data_fields[field]
                         value = data[field]
                         if info['field_type'] == 'Point':
                             print('info', info)
