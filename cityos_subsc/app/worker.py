@@ -109,14 +109,20 @@ class Worker(threading.Thread):
     def save_data(self, myconfig, data):
         result = False
         try:
+            print('myconfig', myconfig)
+            print('data', data)
+            # 履歴DB登録情報があれば、履歴DBに登録する
             if 'key' in myconfig and 'es' in myconfig['key'] and 'fields' in myconfig['key']['es']:
                 doc_id = myconfig['apiname']
                 fields = myconfig['key']['es']['fields']
                 for field in fields:
                     doc_id = f'{doc_id}.{data[field]}'
 
+                data_fields = myconfig['fields']
+                print('fields', data_fields)
+
                 doc = {}
-                for field in myconfig['fields']:
+                for field in data_fields:
                     if field in data:
                         info = fields[field]
                         value = data[field]
