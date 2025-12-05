@@ -143,8 +143,9 @@ class Worker(threading.Thread):
                     nowtime = now.isoformat()
                     doc[self.TIMESTAMP_FIELD] = nowtime
 
-                print('create_document', doc_id, doc)
+                #print('create_document', doc_id, doc)
                 myes.create_document(myconfig, doc_id, doc)
+                result = True
             else:
                 print('履歴のID情報がセットされていません', myconfig)
 
