@@ -122,11 +122,11 @@ function show_params() {
                 let datamodel = selected_myconfig['dataModel'];
                 for (let field in datamodel) {
                     let info = datamodel[field];
+                    let field_name = info['field_name'];
                     let row = makebox(area, 'row', '', '');
-                    makebox(row, 'caption', '', field);
-                    makeEdittext(row, 'text_field', field);
+                    makebox(row, 'caption', '', field_name);
+                    makeEdittext(row, 'text_field', field_name);
                 }
-                //makebox(area, 'row_last', 'dummy', '');
             }
         }
     } catch(error) {
@@ -147,14 +147,16 @@ function build_query() {
     let result = null;
     try {
         if (selected_myconfig) {
-            let datamodel = selected_myconfig['dataModel'];
             let condition = [];
+            let datamodel = selected_myconfig['dataModel'];
             for (let field in datamodel) {
-                let item = document.getElementById(field);
+                let info = datamodel[field];
+                let field_name = info['field_name'];
+                let item = document.getElementById(field_name);
                 if (item) {
                     let text = item.value;
                     if (text.length > 0) {
-                        let q = `${field}==${text}`;
+                        let q = `${field_name}==${text}`;
                         condition.push(q);
                     }
                 }
