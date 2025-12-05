@@ -150,11 +150,13 @@ function build_query() {
             let condition = {};
             let datamodel = selected_myconfig['dataModel'];
             for (let field in datamodel) {
+                let info = datamodel[field];
                 let item = document.getElementById(field);
                 if (item) {
+                    let field_name = info['field_name'];
                     let text = item.value;
                     if (text.length > 0) {
-                        condition[field] = text
+                        condition[field_name] = text
                     }
                 }
             }
@@ -186,7 +188,7 @@ async function search_history(query) {
             'maxResults': 1000
         };
         let params = Object.assign(p, query);
-        
+
         options = {
             method: 'POST',
             headers: headers,
