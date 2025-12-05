@@ -232,6 +232,7 @@ function show_data(data) {
         grid_options = {
             'columnDefs': headerdata,
             'defaultColDef': {
+                editable: true,
                 filter: true,
                 sortable: true,
                 resizable: true
