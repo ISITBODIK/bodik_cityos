@@ -109,8 +109,8 @@ class Worker(threading.Thread):
     def save_data(self, myconfig, data):
         result = False
         try:
-            print('myconfig', myconfig)
-            print('data', data)
+            #print('myconfig', myconfig)
+            #print('data', data)
             # 履歴DB登録情報があれば、履歴DBに登録する
             if 'key' in myconfig and 'es' in myconfig['key'] and 'fields' in myconfig['key']['es']:
                 doc_id = myconfig['apiname']
@@ -119,16 +119,16 @@ class Worker(threading.Thread):
                     doc_id = f'{doc_id}.{data[field]}'
 
                 data_fields = myconfig['fields']
-                print('fields', data_fields)
+                #print('fields', data_fields)
 
                 doc = {}
                 for field in data_fields:
                     if field in data:
                         info = data_fields[field]
                         value = data[field]
+                        # Orionとelasticsearchでは緯度経度情報の持ち方が異なる
                         if info['field_type'] == 'Point':
-                            print('info', info)
-                            print('point value', value)
+                            # 緯度経度情報をelasticsearchに合わせて読み替える
                             coord = value['coordinates']
                             doc[field] = {
                                 'lat': coord[1],
