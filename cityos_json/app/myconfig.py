@@ -14,7 +14,7 @@ class MyConfig:
     TYPE_LGAPI = 'lgapi'            # lgapi     自治体のMyAPI
     TYPE_DPAPI = 'dpapi'            # dpapi     データ基盤のMyAPI
 
-    common_type = 'standard'
+    common_type = 'msds'
 
     field_type_dict = {
         'Lgcode': { 'type': 'keyword' },
@@ -40,10 +40,10 @@ class MyConfig:
     }
 
     filter_dict = {
-        'Lgcode': "term",           # 2025-09-01 keyword: wildcard to term
-        'Lgname': "wildcard",
-        'Keyword': "term",          # 2025-09-01 keyword: wildcard to term
-        'String': "wildcard",
+        'Lgcode': "term",           # 2025-09-01 keyword: wildcard to term（完全一致）
+        'Lgname': "wildcard",       # 部分一致
+        'Keyword': "term",          # 2025-09-01 keyword: wildcard to term（完全一致）
+        'String': "wildcard",       # 部分一致
         'List': "list",
         'Integer': "range",
         'Float': "range",
@@ -55,8 +55,8 @@ class MyConfig:
         'Umu': "wildcard",
         'Kahi': "wildcard",
         'Object': None,
-        'Point': None,
-        'Polygon': None,
+        'Point': 'distance',        # 距離検索（within）
+        'Polygon': 'contain',       # 包含関係
         'Location.lat': "term",
         'Location.lon': "term"
     }

@@ -14,7 +14,7 @@ class MyConfig:
     TYPE_LGAPI = 'lgapi'            # lgapi     自治体のMyAPI
     TYPE_DPAPI = 'dpapi'            # dpapi     データ基盤のMyAPI
 
-    common_type = 'standard'
+    common_type = 'msds'
 
     field_type_dict = {
         'Lgcode': { 'type': 'keyword' },
@@ -40,10 +40,10 @@ class MyConfig:
     }
 
     filter_dict = {
-        'Lgcode': "term",           # 2025-09-01 keyword: wildcard to term
-        'Lgname': "wildcard",
-        'Keyword': "term",          # 2025-09-01 keyword: wildcard to term
-        'String': "wildcard",
+        'Lgcode': "term",           # 2025-09-01 keyword: wildcard to term（完全一致）
+        'Lgname': "wildcard",       # 部分一致
+        'Keyword': "term",          # 2025-09-01 keyword: wildcard to term（完全一致）
+        'String': "wildcard",       # 部分一致
         'List': "list",
         'Integer': "range",
         'Float': "range",
@@ -55,8 +55,8 @@ class MyConfig:
         'Umu': "wildcard",
         'Kahi': "wildcard",
         'Object': None,
-        'Point': None,
-        'Polygon': None,
+        'Point': 'distance',        # 距離検索（within）
+        'Polygon': 'contain',       # 包含関係
         'Location.lat': "term",
         'Location.lon': "term"
     }
@@ -79,6 +79,8 @@ class MyConfig:
                     "index": { "type": "keyword" },
                     "display_name": { "type": "keyword" },
                     "geometry": { "type": "keyword" },
+                    "geometry_field": { "type": "keyword" },        # 2025-12-02 add
+                    "key": { "type": "object" },                    # 2025-12-02 add
 
                     "dataModel": { "type": "object" },
                     "fields": { "type": "object" },
@@ -321,49 +323,35 @@ class MyConfig:
                 properties[field_name] = self.field_type_dict[field_type]
 
 
-            # 管理情報
+            # CKANから自治体単位でデータを取り込む場合の管理情報
             fields['resource_organ_code'] = {
-                "field_type": "String",
+                "field_type": "Keyword",
                 "filter": "wildcard"
             }
             fields['resource_id'] = {
-                "field_type": "String",
+                "field_type": "Keyword",
                 "filter": "wildcard"
             }
-            # 2025-09-01 追加
-            fields[self.TIMESTAMP_FIELD] = {
-                "field_type": "Date",
-                "filter": "range"
-            }
-            
             properties['resource_organ_code'] = self.field_type_dict['Keyword']
             properties['resource_id'] = self.field_type_dict['Keyword']
-            # 2025-08-19 added
+            
+            # 2025-09-01 リアルタイムデータ用の管理情報を追加
+            # datetime型なので、'Keyword'とする
+            fields[self.TIMESTAMP_FIELD] = {
+                "field_type": "Keyword",
+                "filter": "wildcard"
+            }
             properties[self.TIMESTAMP_FIELD] = self.field_type_dict['Keyword']
 
-            # location
+            # 緯度経度情報
+            geometry_field = ''
             geometry = myconfig['geometry']
             if geometry != '':
-                fields['lat'] = {
-                    'field_type': 'Location.lat',
-                    'filter': 'wildcard'
-                }
+                geometry_field = myconfig['geometry_field']
 
-                fields['lon'] = {
-                    'field_type': 'Location.lon',
-                    'filter': 'wildcard'
-                }
-
-                if geometry == 'Point':
-                    if 'lat' in properties:
-                        del properties['lat']
-                    if 'lon' in properties:
-                        del properties['lon']
-                    properties['geometry'] = self.field_type_dict['Point']
-                elif geometry == 'Polygon':
-                    properties['geometry'] = self.field_type_dict['Polygon']
-                elif geometry == 'Line':
-                    properties['geometry'] = self.field_type_dict['Line']
+            if geometry_field != '' and geometry_field not in properties:
+                if geometry in self.field_type_dict:
+                    properties[geometry_field] = self.field_type_dict[geometry]
 
             myconfig['fields'] = fields
             myconfig['mapping'] = {
