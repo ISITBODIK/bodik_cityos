@@ -372,7 +372,7 @@ def set_dpapi(config_file: UploadFile=File(...)):
         print('set_dpapi', e)
     return result
 
-@app.get('/myapi/index', tags=['myapi'])
+@app.get('/myapi/data', tags=['myapi'])
 def search_myapi_es_data(apiname: str):
     result = False
     try:
