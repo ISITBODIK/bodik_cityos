@@ -35,8 +35,8 @@ class MyConfig:
         'Point': { 'type': 'geo_point' },       # 距離計算のためには、geo_pointが必要
         'Line': { 'type': 'geo_shape' },
         'Polygon': { 'type': 'geo_shape' },
-        'Location.lat': { 'type': 'Float' },
-        'Location.lon': { 'type': 'Float' }
+        'Location.lat': { 'type': 'float' },
+        'Location.lon': { 'type': 'float' }
     }
 
     filter_dict = {
