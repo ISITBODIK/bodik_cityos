@@ -39,7 +39,7 @@
     },
     "座標": {
       "field_name": "location",
-      "type": "geo:json"
+      "type": "Point"
     }
   }
 }
