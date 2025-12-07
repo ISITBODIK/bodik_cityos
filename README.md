@@ -64,7 +64,7 @@ Kongの管理画面を表示する。
 
 ## (9) MyAPI登録
 BODIK CityOSにデータを取り込むには、事前に「データセット定義JSON」を作成し、CityOSに登録する必要がある。（MyAPI登録作業）  
-詳細は、[SETUP_MYAPI.md](SETUP_MYAPI.md) を参照。
+詳細は、[MYAPIの仕組み](SETUP_MYAPI.md) を参照。
 
 ## (10) データ取り込み
 外部からBODIK CityOSにデータを取り込むには、「BODIK ODGWR」を利用する。
