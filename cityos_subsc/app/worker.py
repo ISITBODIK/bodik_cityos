@@ -10,6 +10,7 @@ from myconfig import MyConfig
 class Worker(threading.Thread):
 
     TIMESTAMP_FIELD = '_updated_at'
+    KEY_HISTORY = 'history'
 
     def __init__(self, queue):
         super(Worker, self).__init__()
@@ -113,9 +114,9 @@ class Worker(threading.Thread):
             if 'key' in myconfig:
                 key = myconfig['key']
                 if  self.KEY_HISTORY in key:
-                    history = key[self.KEY_HISTORY]
-                    if 'fields' in history:
-                        key_fields = history['fields']
+                    key_info = key[self.KEY_HISTORY]
+                    if 'fields' in key_info:
+                        key_fields = key_info['fields']
                         doc_id = myconfig['apiname']
                         for field in key_fields:
                             doc_id = f'{doc_id}.{data[field]}'
