@@ -76,9 +76,9 @@ BODIK CityOSに外部のデータを取り込むには、「BODIK ODGWR」を利
 BODIK ODGWRは、BODIK CityOSにデータをインポートする機能を提供する。  
 インポートするデータに関しては、BODIK CityOSに登録した「データセット定義JSONファイル」をBODIK ODGWRにも登録することで、BODIK CityOSに合わせてデータを登録する。  
 
-## (11) MQTTブローカーセットアップ（準備中）
-MQTTブローカーとしてmosquittoを稼働する。  
-リアルタイムデータをMQTT通信で受け取り、リアルタイム用DB(Orion)にコピーする。  
+## (11) mosquittoセットアップ（準備中）
+MQTTブローカーとしてmosquittoを採用する。  
+mosquittoがリアルタイムデータをMQTT通信で受け取り、「MQTTサブスクリプション機能」がリアルタイム用DB(Orion)にコピーする。  
 
 外部からMQTT通信を行う場合、利用者から事前にユーザー登録申請と、CityOS管理者による接続情報（ユーザーIDとパスワード）の発行が必要となる。  
 詳細は、[MQTTブローカーセットアップ]を参照。  
