@@ -46,7 +46,7 @@ HTTPS通信のためのSSL証明書は、環境ごとに用意すること。
 
 	docker compose up -d --build
 
-## (7) keycloakセットアップ（準備中）
+## (7) keycloakセットアップ
 ユーザー登録など、ユーザー認証に関する設定を行う。  
 keycloakの管理画面を表示する。
 
@@ -54,7 +54,7 @@ keycloakの管理画面を表示する。
 
 詳細は、[SETUP_KEYCLOAK.md](SETUP_KEYCLOAK.md) を参照。
 
-## (8) Kongセットアップ（準備中）
+## (8) Kongセットアップ
 APIゲートウェイはKongを使用する。  
 Kongの管理画面を表示する。
 
@@ -62,11 +62,11 @@ Kongの管理画面を表示する。
 
 詳細は、[SETUP_KONG.md](SETUP_KONG.md) を参照。
 
-## (9) MyAPI登録（準備中）
+## (9) MyAPI登録
 BODIK CityOSにデータを取り込むには、事前に「データセット定義JSON」を作成し、CityOSに登録する必要がある。（MyAPI登録作業）  
 詳細は、[SETUP_MYAPI.md](SETUP_MYAPI.md) を参照。
 
-## (10) データ取り込み（準備中）
+## (10) データ取り込み
 外部からBODIK CityOSにデータを取り込むには、「BODIK ODGWR」を利用する。
 
 ## (11) タイルサーバーセットアップ（準備中）
