@@ -110,43 +110,51 @@ class Worker(threading.Thread):
         result = False
         try:
             # 履歴DB登録情報があれば、履歴DBに登録する
-            if 'key' in myconfig and 'es' in myconfig['key'] and 'fields' in myconfig['key']['es']:
-                doc_id = myconfig['apiname']
-                fields = myconfig['key']['es']['fields']
-                for field in fields:
-                    doc_id = f'{doc_id}.{data[field]}'
+            if 'key' in myconfig:
+                key = myconfig['key']
+                if  self.KEY_HISTORY in key:
+                    history = key[self.KEY_HISTORY]
+                    if 'fields' in history:
+                        key_fields = history['fields']
+                        doc_id = myconfig['apiname']
+                        for field in key_fields:
+                            doc_id = f'{doc_id}.{data[field]}'
 
-                data_fields = myconfig['fields']
-                doc = {}
-                for field in data_fields:
-                    if field in data:
-                        info = data_fields[field]
-                        value = data[field]
-                        # Orionとelasticsearchでは緯度経度情報の持ち方が異なる
-                        if info['field_type'] == 'Point':
-                            # 緯度経度情報をelasticsearchに合わせて読み替える
-                            coord = value['coordinates']
-                            doc[field] = {
-                                'lat': coord[1],
-                                'lon': coord[0]
-                            }
-                        else:
-                            if type(value) is str:
-                                doc[field] = self.decodeFiwareEscapeChar(value)
-                            else:
-                                doc[field] = value
+                        data_fields = myconfig['fields']
+                        doc = {}
+                        for field in data_fields:
+                            if field in data:
+                                info = data_fields[field]
+                                value = data[field]
+                                # Orionとelasticsearchでは緯度経度情報の持ち方が異なる
+                                if info['field_type'] == 'Point':
+                                    # 緯度経度情報をelasticsearchに合わせて読み替える
+                                    coord = value['coordinates']
+                                    doc[field] = {
+                                        'lat': coord[1],
+                                        'lon': coord[0]
+                                    }
+                                else:
+                                    if type(value) is str:
+                                        doc[field] = self.decodeFiwareEscapeChar(value)
+                                    else:
+                                        doc[field] = value
 
-                if self.TIMESTAMP_FIELD not in doc:
-                    # ソート用に登録時刻を記録する
-                    now = datetime.datetime.now(self.JST)
-                    nowtime = now.isoformat()
-                    doc[self.TIMESTAMP_FIELD] = nowtime
+                        if self.TIMESTAMP_FIELD not in doc:
+                            # ソート用に登録時刻を記録する
+                            now = datetime.datetime.now(self.JST)
+                            nowtime = now.isoformat()
+                            doc[self.TIMESTAMP_FIELD] = nowtime
 
-                #print('create_document', doc_id, doc)
-                myes.create_document(myconfig, doc_id, doc)
-                result = True
+                        #print('create_document', doc_id, doc)
+                        myes.create_document(myconfig, doc_id, doc)
+                        result = True
+                    else:
+                        print('履歴DBのキーにフィールドが登録されていません', myconfig)
+                else:
+                    print('履歴DBのキー情報がありません', myconfig)
             else:
-                print('履歴のID情報がセットされていません', myconfig)
+                print('キー情報がセットされていません', myconfig)
 
         except Exception as e:
             print('save_data', e)
