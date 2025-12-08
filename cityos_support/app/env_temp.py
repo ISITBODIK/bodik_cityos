@@ -6,5 +6,6 @@ es_server = 'http://cityos_es:9200'
 
 orion_server = 'http://orion:1026'
 
-mqtt_broker = 'cityos_emqx'     # コンテナ間通信なので、コンテナ名を指定する
+# for MQTT test
+mqtt_broker = 'cityos.bodik.jp'
 mqtt_port = 1883
