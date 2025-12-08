@@ -25,9 +25,13 @@ Keycloakを使って、FIWAREのDBにアクセスするユーザーの権限を�
 Keycloakにカスタムのユーザー属性を２つ追加する。  
 |カスタムユーザー属性|内容|
 |----|----|
-|allowed_fiware_scopes|そのユーザーがアクセスできる「Fiware-Service」と「Fiware-ServicePath」の組み合わせ|
+|allowed_fiware_scopes|そのユーザーがアクセスできる「fiware-service」と「fiware-servicepath」の組み合わせ|
 |access_level|上記で指定したデータへのアクセスモード（read_only, read_write）|
 
+allowed_fiware_scopesの例
+
+    {"fiware-service": "bodik", "fiware-servicepath": "/public/Amedas"}
+    
 作成したカスタム属性をアクセストークンに含めるように設定する。  
 こうすることで、アクセストークンを調べると、そのユーザーがアクセスできるデータセットとアクセスモードを知ることができる。  
 
@@ -41,3 +45,4 @@ Keycloakにカスタムのユーザー属性を２つ追加する。
 リフレッシュもできなくなった場合は、再度アクセストークンの取得を行う。 
 
 通常、アクセストークンの取得とリフレッシュ処理、アクセストークンの再取得は、アプリケーションが自動的に行うことで、ユーザーが不便に感じることはない。
+
