@@ -21,6 +21,7 @@ class OrionSubscription:
 
             obj = MyConfig()
             self.myconfig = obj.get_config(apiname)
+            print('myconfig', apiname, self.myconfig)
             if self.myconfig is not None:
                 self.entity_type = self.myconfig['entity_type']
                 self.get_headers = {
