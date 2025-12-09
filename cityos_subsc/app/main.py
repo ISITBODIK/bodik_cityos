@@ -258,7 +258,7 @@ def get_subscription_usecase_list(usecase: str, fiware_service: str):
     return result
 
 @app.get('/subscription', tags=['manager'])
-def search_subscription(usecase: str, apiname: str):
+def search_subscription(apiname: str, usecase: str = 'history'):
     result = False
     try:
         obj = OrionSubscription(usecase, apiname)
