@@ -224,11 +224,12 @@ def check_subscription():
 #   サブスクリプション管理
 ###################################
 @app.post('/subscription', tags=['manager'])
-def set_subscription(usecase: str, apiname: str, endpoint: str):
+def set_subscription(apiname: str, usecase: str = 'history', endpoint: str = 'http://172.29.0.100:8080/notify'):
     result = False
     try:
         obj = OrionSubscription(usecase, apiname)
-        result = obj.set_subscription(endpoint)
+        url = f'{endpoint}/{usecase}'
+        result = obj.set_subscription(url)
 
     except Exception as e:
         print('set_subscription', e)
