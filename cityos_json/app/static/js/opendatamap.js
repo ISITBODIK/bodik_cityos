@@ -24,6 +24,8 @@ const listMaxResult = [
     { value: 200,  text: '200件'},
     { value: 500,  text: '500件'}
 ];
+
+const NO_LIMITS = 9999999;
 const listDistance = [
     { value: 1000,   text: '1000m' },
     { value: 2000,   text: '2000m' },
@@ -32,7 +34,7 @@ const listDistance = [
     { value: 20000,  text: '20km' },
     { value: 50000,  text: '50km' },
     { value: 100000, text: '100km' },
-    { value: 0, text: '制限なし' }
+    { value: NO_LIMITS, text: '制限なし' }
 ];
 
 function show_page() {
@@ -431,7 +433,7 @@ function search_data() {
                 'limit': 1000
             }
 
-            if (selected_distance && selected_pos) {
+            if (selected_distance != NO_LIMITS && selected_pos) {
                 let lat = selected_pos[0];
                 let lon = selected_pos[1];
                 q['georel'] = `near;maxDistance:${selected_distance}`;
