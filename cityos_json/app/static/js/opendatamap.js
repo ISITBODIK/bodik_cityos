@@ -16,6 +16,7 @@ let geometry_field = null;
 let currentPosMarker = null;
 let rangeCircle = null;
 let selected_pos = null;
+let iconCurrentPos = null;
 
 const listMaxResult = [
     { value: 10,   text: '10件'},
@@ -291,6 +292,11 @@ function set_property_select() {
 */
 function initLeaflet() {
     try {
+        iconCurrentPos = L.divIcon({
+            className: "divicon1",
+            iconAnchor: [10, 10]
+        });
+
         map = L.map('map', { zoomControl: true });
         //  指定された緯度経度を中心とした地図
         let center = [ 33.59253352302834, 130.35576696764173 ];
