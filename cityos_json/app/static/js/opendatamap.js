@@ -13,6 +13,10 @@ let selected_datatype = null;
 let myconfig_list = {}
 let geometry_field = null;
 
+let currentPosMarker = null;
+let rangeCircle = null;
+let selected_pos = null;
+
 const listMaxResult = [
     { value: 10,   text: '10件'},
     { value: 100,  text: '100件'},
@@ -331,6 +335,63 @@ function initLeaflet() {
     }
 }
 
+function setMarker(clicked) {
+    try {
+        if (currentPosMarker !== null) {
+            //  古いマーカーを削除
+            map.removeLayer(currentPosMarker);
+            currentPosMarker = null;
+        }
+
+        if (selected_pos !== null) {
+            currentPosMarker = L.marker(selected_pos, { icon: iconCurrentPos, draggable: false }).addTo(map);
+            let popup = L.popup().setContent(map_data.posname);
+            currentPosMarker.bindPopup(popup);
+    
+            /*
+            currentPosMarker.on('dragend', function(evt) {
+                let latlng = this.getLatLng();
+                let lat = latlng.lat.toFixed(6);
+                let lon = latlng.lng.toFixed(6);
+                selected_pos = [ lat, lon];
+                callapiname(clicked);
+            });
+            */
+        }
+
+        callapiname(clicked);
+
+    } catch(error) {
+        alert('setMarker:' + error);
+    }
+}
+
+function build_query() {
+    let result = null;
+    try {
+        if (selected_myconfig) {
+            let condition = [];
+            let datamodel = selected_myconfig['dataModel'];
+            for (let field in datamodel) {
+                let info = datamodel[field];
+                let field_name = info['field_name'];
+                let item = document.getElementById(field_name);
+                if (item) {
+                    let text = item.value;
+                    if (text.length > 0) {
+                        let q = `${field_name}==${text}`;
+                        condition.push(q);
+                    }
+                }
+            }
+            result = condition.join(';')
+        }
+    } catch(error) {
+        alert('build_query:' + error);
+    }
+    return result;
+}
+
 function search_data() {
     try {
         if (selected_apiname && selected_distance && selected_count) {
@@ -363,6 +424,16 @@ function search_data() {
                 'offset': 0,
                 'limit': 1000
             }
+
+            if (selected_distance && selected_pos) {
+                let lat = selected_pos[0];
+                let lon = selected_pos[1];
+                q['georel'] = `near;maxDistance:${selected_dictance}`;
+                q['geometry'] = 'point';
+                q['coords'] = `${lat},${lon}`;
+                q['orderBy'] = 'geo:distance';
+            }
+
             const params = new URLSearchParams(q)
             let url = `${fiware_server}/v2/entities?` + params.toString();
             fetch(url, options)
@@ -387,30 +458,55 @@ function show_data(data) {
             layerMarker = null;
         }
 
+        //  古い範囲表示を削除
+        if (rangeCircle !== null) {
+            map.removeLayer(rangeCircle);
+            rangeCircle = null;
+        }
+        //  新しい範囲表示を描画
+        if (geometry_type == 'Point' && selected_pos !== null) {
+            rangeCircle = L.circle(selected_pos,
+                {
+                    radius: selected_distance,
+                    color: '#5555ff',
+                    weight: 1,
+                    fill: true,
+                    //fillColor: '#ffffff',
+                    opacity: 0.5
+                }
+            );
+            rangeCircle.addTo(map);
+        }
+
         let bounds = null;
         let markers = [];
         for (let item of data) {
             console.log(item);
             //let coordinates = item['location']['coordinates'];
-            let coordinates = item[geometry_field]['coordinates'];
-            let pos = [ coordinates[1], coordinates[0] ];
-            let marker = L.marker(pos);
-            let info = item[selected_property];
-            let content = info;
-            if (selected_datatype == '画像') {
-                let path = info.replace('uploads', 'download');
-                console.log(path);
-                content = `<img class="photo" src="${path}" />`
-            }
-            console.log(content);
-            let popup = L.popup().setContent(content);
-            marker.bindPopup(popup);
+            if (geometry_field in item) {
+                let geometry = item[geometry_field];
+                if ('coordinates' in geometry) {
+                    let coordinates = geometry['coordinates'];
+                    let pos = [ coordinates[1], coordinates[0] ];
+                    let marker = L.marker(pos);
+                    let info = item[selected_property];
+                    let content = info;
+                    if (selected_datatype == '画像') {
+                        let path = info.replace('uploads', 'download');
+                        console.log(path);
+                        content = `<img class="photo" src="${path}" />`
+                    }
+                    console.log(content);
+                    let popup = L.popup().setContent(content);
+                    marker.bindPopup(popup);
 
-            markers.push(marker);
-            if (bounds == null) {
-                bounds = L.latLngBounds(pos, pos);
-            } else {
-                bounds.extend(pos);
+                    markers.push(marker);
+                    if (bounds == null) {
+                        bounds = L.latLngBounds(pos, pos);
+                    } else {
+                        bounds.extend(pos);
+                    }
+                }
             }
         }
 
