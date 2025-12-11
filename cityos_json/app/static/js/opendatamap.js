@@ -432,6 +432,7 @@ function search_data() {
                 'offset': 0,
                 'limit': selected_count
             }
+            // 地理的検索
             if (selected_distance != NO_LIMITS && selected_pos) {
                 let lat = selected_pos[0];
                 let lon = selected_pos[1];
