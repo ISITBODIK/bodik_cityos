@@ -351,7 +351,7 @@ function setMarker(clicked) {
 
         if (selected_pos !== null) {
             currentPosMarker = L.marker(selected_pos, { icon: iconCurrentPos, draggable: false }).addTo(map);
-            let popup = L.popup().setContent(map_data.posname);
+            let popup = L.popup().setContent('現在地');
             currentPosMarker.bindPopup(popup);
     
             /*
