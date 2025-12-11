@@ -434,7 +434,7 @@ function search_data() {
             if (selected_distance && selected_pos) {
                 let lat = selected_pos[0];
                 let lon = selected_pos[1];
-                q['georel'] = `near;maxDistance:${selected_dictance}`;
+                q['georel'] = `near;maxDistance:${selected_distance}`;
                 q['geometry'] = 'point';
                 q['coords'] = `${lat},${lon}`;
                 q['orderBy'] = 'geo:distance';
