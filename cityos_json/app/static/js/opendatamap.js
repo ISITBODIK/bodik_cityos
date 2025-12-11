@@ -487,6 +487,11 @@ function show_data(data) {
         }
 
         let bounds = null;
+        if (rangeCircle) {
+            bounds = L.latLngBounds(selected_pos, selected_pos);
+            bounds.extend(rangeCircle.getBounds());
+        }
+        
         let markers = [];
         for (let item of data) {
             console.log(item);
