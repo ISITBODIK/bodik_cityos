@@ -470,7 +470,7 @@ function show_data(data) {
             rangeCircle = null;
         }
         //  新しい範囲表示を描画
-        if (geometry_type == 'Point' && selected_pos !== null) {
+        if (selected_pos !== null) {
             rangeCircle = L.circle(selected_pos,
                 {
                     radius: selected_distance,
