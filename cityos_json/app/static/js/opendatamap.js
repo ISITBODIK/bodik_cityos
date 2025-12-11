@@ -365,7 +365,7 @@ function setMarker(clicked) {
             */
         }
 
-        callapiname(clicked);
+        search_data();
 
     } catch(error) {
         alert('setMarker:' + error);
