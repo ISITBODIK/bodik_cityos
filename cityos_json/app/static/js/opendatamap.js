@@ -442,6 +442,7 @@ function search_data() {
                 q['orderBy'] = 'geo:distance';
             }
 
+            console.log('q', q);
             const params = new URLSearchParams(q)
             let url = `${fiware_server}/v2/entities?` + params.toString();
             fetch(url, options)
