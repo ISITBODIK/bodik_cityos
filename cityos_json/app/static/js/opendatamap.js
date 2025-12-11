@@ -430,9 +430,8 @@ function search_data() {
                 'type': info['entity_type'],
                 'options': 'keyValues',
                 'offset': 0,
-                'limit': 1000
+                'limit': selected_count
             }
-
             if (selected_distance != NO_LIMITS && selected_pos) {
                 let lat = selected_pos[0];
                 let lon = selected_pos[1];
