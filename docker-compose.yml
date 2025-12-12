@@ -149,10 +149,15 @@ services:
     depends_on:
       - mongo-db
     #command: -dbhost mongo-db
-    command: -dbURI mongodb://mongo-db -reqPoolSize 4
+    command: -dbURI mongodb://mongo-db -reqPoolSize 8
     #command: -dbURI mongodb://mongo-db -https -cert /ssl/bodik.jp.pem -key /ssl/bodik.key
     environment:
       - ORION_LOG_LEVEL=INFO
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 1G
     networks:
       - cityos_net
     logging:
@@ -168,6 +173,12 @@ services:
     #command: --nojournal
     volumes:
       - cityos_mongodb_vol:/data/db
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 6G
+    command: mongod --wiredTigerCacneSizeGB 5
     networks:
       - cityos_net
     logging:
