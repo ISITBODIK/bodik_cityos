@@ -149,7 +149,7 @@ services:
     depends_on:
       - mongo-db
     #command: -dbhost mongo-db
-    command: -dbURI mongodb://mongo-db -reqPoolSize 8 -allowDiskUse
+    command: -dbURI mongodb://mongo-db -reqPoolSize 8
     #command: -dbURI mongodb://mongo-db -https -cert /ssl/bodik.jp.pem -key /ssl/bodik.key
     environment:
       - ORION_LOG_LEVEL=INFO
