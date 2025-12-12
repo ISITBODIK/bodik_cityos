@@ -178,7 +178,7 @@ services:
         limits:
           cpus: '3.0'
           memory: 6G
-    command: mongod --wiredTigerCacheSizeGB 5
+    command: mongod --wiredTigerCacheSizeGB 3
     networks:
       - cityos_net
     logging:
