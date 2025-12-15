@@ -127,7 +127,7 @@ class Worker(threading.Thread):
                             if field in data:
                                 info = data_fields[field]
                                 value = data[field]
-                                print('value', value)
+                                #print('value', value)
                                 # Orionとelasticsearchでは緯度経度情報の持ち方が異なる
                                 if info['field_type'] == 'Point':
                                     # 緯度経度情報をelasticsearchに合わせて読み替える
