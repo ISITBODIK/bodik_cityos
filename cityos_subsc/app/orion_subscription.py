@@ -182,7 +182,8 @@ class OrionSubscription:
             status_code = response.status_code
             if status_code == 201:
                 # 作成OK
-                print('サブスクリプションを作成しました')
+                payload = response.json()
+                print('サブスクリプションを作成しました', payload)
                 result = True
             else:
                 print('サブスクリプションを作成できませんでした', status_code)
@@ -217,7 +218,8 @@ class OrionSubscription:
             status_code = response.status_code
             if status_code == 204:
                 # 更新OK
-                print('サブスクリプションを更新しました')
+                payload = response.json()
+                print('サブスクリプションを更新しました', payload)
                 result = True
             else:
                 print('サブスクリプションを更新できませんでした', status_code)
