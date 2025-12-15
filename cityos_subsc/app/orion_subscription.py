@@ -29,6 +29,7 @@ class OrionSubscription:
                     'Fiware-ServicePath': self.myconfig['Fiware-ServicePath']
                 }
                 self.post_headers = {
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Fiware-Service': self.myconfig['Fiware-Service'],
                     'Fiware-ServicePath': self.myconfig['Fiware-ServicePath']
