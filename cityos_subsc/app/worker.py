@@ -125,8 +125,9 @@ class Worker(threading.Thread):
                         doc = {}
                         for field in data_fields:
                             if field in data:
-                                info = data_fields[field]
+                                # dataは keyValues 形式のデータを想定している
                                 value = data[field]
+                                info = data_fields[field]
                                 #print('value', value)
                                 # Orionとelasticsearchでは緯度経度情報の持ち方が異なる
                                 if info['field_type'] == 'Point':
