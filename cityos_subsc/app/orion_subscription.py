@@ -185,6 +185,7 @@ class OrionSubscription:
             status_code = response.status_code
             if status_code == 201:
                 # 作成OK
+                print('create subscription DONE')
                 payload = response.json()
                 print('サブスクリプションを作成しました', payload)
                 result = True
