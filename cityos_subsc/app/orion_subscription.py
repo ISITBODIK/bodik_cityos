@@ -173,9 +173,9 @@ class OrionSubscription:
                     'http': {
                         'url': endpoint
                     },
-                    'attrsFormat': 'keyValues',
-                    'throttling': 300       # 5分（300sec）に1回、サブスクリプションを発動する。
-                }
+                    'attrsFormat': 'keyValues'
+                },
+                'throttling': 300       # 5分（300sec）に1回、サブスクリプションを発動する。
             }
             print('subscription data', data)
             response = requests.post(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
@@ -210,9 +210,9 @@ class OrionSubscription:
                     'http': {
                         'url': endpoint
                     },
-                    'attrsFormat': 'keyValues',
-                    'throttling': 300       # 5分（300sec）に1回、サブスクリプションを発動する。
-                }
+                    'attrsFormat': 'keyValues'
+                },
+                'throttling': 300       # 5分（300sec）に1回、サブスクリプションを発動する。
             }
             response = requests.patch(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
             status_code = response.status_code
