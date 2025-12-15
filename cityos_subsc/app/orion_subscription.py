@@ -197,6 +197,7 @@ class OrionSubscription:
         result = False
         try:
             url = f'{self.orion_server}/subscriptions/{subscription_id}'
+            """
             data = {
                 'description': self.subscription_key,
                 'subject': {
@@ -214,6 +215,15 @@ class OrionSubscription:
                     'throttling': 300,
                     'attrsFormat': 'keyValues'
                 },
+            }
+            """
+            data = {
+                'notification': {
+                    'http': {
+                        'url': endpoint
+                    },
+                    'throttling': 300
+                }
             }
             print('subscription data', data)
             response = requests.patch(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
