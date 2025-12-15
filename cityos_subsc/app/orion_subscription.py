@@ -218,6 +218,9 @@ class OrionSubscription:
                 },
             }
             """
+            # patchは指定した属性のみを変更する
+            # 変更する属性は完全に指定する必要あり。
+            # →attrsFormatは、変更しないが指定しないとデフォルト（normalized）に戻る。
             data = {
                 'notification': {
                     'http': {
