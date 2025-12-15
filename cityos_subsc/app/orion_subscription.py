@@ -214,6 +214,7 @@ class OrionSubscription:
                 },
                 'throttling': 300
             }
+            print('subscription data', data)
             response = requests.patch(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
             status_code = response.status_code
             if status_code == 204:
