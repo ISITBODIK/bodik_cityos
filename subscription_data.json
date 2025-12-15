@@ -1,0 +1,135 @@
+{
+    "id": "Amedas.82182",
+    "type": "Amedas",
+    "date_observed": {
+        "type": "Text",
+        "value": "2025-12-15T16:20:00+09:00",
+        "metadata": {}
+    },
+    "humidity": {
+        "type": "Number",
+        "value": 57,
+        "metadata": {}
+    },
+    "identifier": {
+        "type": "Text",
+        "value": "82182",
+        "metadata": {}
+    },
+    "latitude": {
+        "type": "Location.lat",
+        "value": 33.581666667,
+        "metadata": {}
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                130.375,
+                33.581666667
+            ]
+        },
+        "metadata": {}
+    },
+    "longitude": {
+        "type": "Location.lon",
+        "value": 130.375,
+        "metadata": {}
+    },
+    "name": {
+        "type": "Text",
+        "value": "福岡",
+        "metadata": {}
+    },
+    "normalPressure": {
+        "type": "Number",
+        "value": 1023.9,
+        "metadata": {}
+    },
+    "precipitation10m": {
+        "type": "Number",
+        "value": 0,
+        "metadata": {}
+    },
+    "precipitation1h": {
+        "type": "Number",
+        "value": 0,
+        "metadata": {}
+    },
+    "precipitation24h": {
+        "type": "Number",
+        "value": 0.5,
+        "metadata": {}
+    },
+    "precipitation3h": {
+        "type": "Number",
+        "value": 0,
+        "metadata": {}
+    },
+    "pressure": {
+        "type": "Number",
+        "value": 1022.1,
+        "metadata": {}
+    },
+    "snow": {
+        "type": "Number",
+        "value": None,
+        "metadata": {}
+    },
+    "snow12h": {
+        "type": "Number",
+        "value": None,
+        "metadata": {}
+    },
+    "snow1h": {
+        "type": "Number",
+        "value": None,
+        "metadata": {}
+    },
+    "snow24h": {
+        "type": "Number",
+        "value": None,
+        "metadata": {}
+    },
+    "snow6h": {
+        "type": "Number",
+        "value": None,
+        "metadata": {}
+    },
+    "sun10m": {
+        "type": "Number",
+        "value": 6,
+        "metadata": {}
+    },
+    "sun1h": {
+        "type": "Number",
+        "value": 0.8,
+        "metadata": {}
+    },
+    "temp": {
+        "type": "Number",
+        "value": 9.6,
+        "metadata": {}
+    },
+    "visibility": {
+        "type": "Number",
+        "value": 20000,
+        "metadata": {}
+    },
+    "weather": {
+        "type": "Number",
+        "value": None,
+        "metadata": {}
+    },
+    "wind": {
+        "type": "Number",
+        "value": 2.4,
+        "metadata": {}
+    },
+    "windDirection": {
+        "type": "Number",
+        "value": 16,
+        "metadata": {}
+    }
+}

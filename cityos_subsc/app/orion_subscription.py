@@ -223,6 +223,7 @@ class OrionSubscription:
                     'http': {
                         'url': endpoint
                     },
+                    'attrsFormat': 'keyValues'
                 },
                 'throttling': 300
             }
