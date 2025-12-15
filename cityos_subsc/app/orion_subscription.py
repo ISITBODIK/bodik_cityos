@@ -176,9 +176,9 @@ class OrionSubscription:
                     'http': {
                         'url': endpoint
                     },
-                    'throttling': 300,
                     'attrsFormat': 'keyValues'
                 },
+                'throttling': 300,
             }
             print('subscription data', data)
             response = requests.post(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
