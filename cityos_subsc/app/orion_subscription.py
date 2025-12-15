@@ -137,19 +137,21 @@ class OrionSubscription:
 
         except Exception as e:
             print('search_subscription', e)
+            result = False
         return result
 
     def set_subscription(self, endpoint):
         result = False
         try:
             sub_data = self.search_subscription()
-            if sub_data is None:
-                print('new subscription')
-                self.create_subscription(endpoint)
-            else:
-                print('update subscription')
-                subscription_id = sub_data['id']
-                self.update_subscription(endpoint, subscription_id)
+            if sub_data != False:
+                if sub_data is None:
+                    print('new subscription')
+                    self.create_subscription(endpoint)
+                else:
+                    print('update subscription')
+                    subscription_id = sub_data['id']
+                    self.update_subscription(endpoint, subscription_id)
             
         except Exception as e:
             print('set_subscription', e)
