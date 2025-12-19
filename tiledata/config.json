@@ -21,7 +21,7 @@
     },
     "styles": {
         "401307_elementary": {
-            "style": "401307_elementary.json",
+            "style": "401307-elementary.json",
             "tilejson": {
                 "vector_layers": [
                     {
