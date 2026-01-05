@@ -4,6 +4,7 @@ urllib3.disable_warnings(InsecureRequestWarning)
 
 import requests
 import json
+import time
 
 from myconfig import MyConfig
 from env import orion_server
@@ -184,10 +185,11 @@ class TestOrion:
         try:
             url = f'{orion_server}/{self.orion_version}/entities'
             del_url = f'{orion_server}/{self.orion_version}/op/update'
+            delete_records = 1000
             q = {
                 'type': self.entity_type,
                 'offset': 0,
-                'limit': 100
+                'limit': delete_records
             }
             r = requests.get(url, params=q, headers=self.get_headers, timeout=self.api_timeout, verify=False)
             if r.status_code == 200:    # 新規作成成功
@@ -199,7 +201,7 @@ class TestOrion:
                         'id': item['id']
                     }
                     entities.append(info)
-                print('delete data', entities)
+                #print('delete data', entities)
 
                 body = {
                     'actionType': 'delete',
