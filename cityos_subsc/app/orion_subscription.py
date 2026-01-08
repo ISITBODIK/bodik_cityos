@@ -17,6 +17,8 @@ class OrionSubscription:
             self.subscription_key = f'{usecase}|{apiname}'
             self.orion_server = f'{orion_server}/v2'
             self.api_timeout = 10.0
+            # throttlingを60秒にセットする（１分間隔で更新するケースに対応）
+            self.throttling = 60
             self.subscription_list = None
 
             obj = MyConfig()
@@ -178,7 +180,7 @@ class OrionSubscription:
                     },
                     'attrsFormat': 'keyValues'
                 },
-                'throttling': 300,
+                'throttling': self.throttling,
             }
             print('subscription data', data)
             response = requests.post(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
@@ -228,7 +230,7 @@ class OrionSubscription:
                     },
                     'attrsFormat': 'keyValues'
                 },
-                'throttling': 300
+                'throttling': self.throttling
             }
             print('subscription data', data)
             response = requests.patch(url, json=data, headers=self.post_headers, timeout=self.api_timeout, verify=False)
