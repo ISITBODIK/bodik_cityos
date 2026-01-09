@@ -17,8 +17,9 @@ class OrionSubscription:
             self.subscription_key = f'{usecase}|{apiname}'
             self.orion_server = f'{orion_server}/v2'
             self.api_timeout = 10.0
-            # throttlingを60秒にセットする（１分間隔で更新するケースに対応）
-            self.throttling = 60
+            # throttlingを30秒にセットする
+            # １分間隔で更新するケースに対応。60秒にすると、ロストする可能性があるので、半分の30秒にセットする。
+            self.throttling = 30
             self.subscription_list = None
 
             obj = MyConfig()
