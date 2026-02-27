@@ -438,6 +438,7 @@ def top_page(request: Request):
     return templates.TemplateResponse(
         'top_page.html',
         {
+            'base_url': '/webapp/' if use_kong else '',
             'request': request
         }
     )
