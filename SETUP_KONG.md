@@ -17,6 +17,7 @@ KongをAPIゲートウェイとして利用する。
 |----|----|----|----|----|----|
 |orion-route|/v2|https|Orionアクセス|orion-service|fiware-authz|
 |webapp-route|/webapp|https|Webアプリを提供|webapp-service||
+|history-route|/history|https|タイルサーバー|webapp-service||
 |auth-route|/auth|https|認証支援|webapp-service||
 |myapi-route|/myapi|https|MyAPI情報|webapp-service||
 |uploads-route|/uploads|https|ファイルアップロード|webapp-service|fiware-authz|
