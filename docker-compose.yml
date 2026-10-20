@@ -405,7 +405,9 @@ services:
             max-size: 3m
 
   minio:
-    build: ./minio
+    # build: ./minio   # Docker Hub の minio/minio が取得できなくなったため
+    image: cityos-minio:latest
+    pull_policy: never
     container_name: cityos_minio
     environment:
       MINIO_ROOT_USER: bodik
